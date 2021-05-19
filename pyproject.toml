@@ -6,9 +6,11 @@ authors = ["Matsui <ptiringo@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
+Scrapy = "^2.5.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
+black = {version = "^21.5b1", allow-prereleases = true}
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
