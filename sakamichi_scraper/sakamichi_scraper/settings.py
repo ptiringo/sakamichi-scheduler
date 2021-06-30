@@ -1,4 +1,4 @@
-# Scrapy settings for scraping project
+# Scrapy settings for sakamichi_scraper project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -7,14 +7,14 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = "scraping"
+BOT_NAME = "sakamichi_scraper"
 
-SPIDER_MODULES = ["scraping.spiders"]
-NEWSPIDER_MODULE = "scraping.spiders"
+SPIDER_MODULES = ["sakamichi_scraper.spiders"]
+NEWSPIDER_MODULE = "sakamichi_scraper.spiders"
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-# USER_AGENT = 'scraping (+http://www.yourdomain.com)'
+# USER_AGENT = 'sakamichi_scraper (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = True
@@ -45,13 +45,13 @@ ROBOTSTXT_OBEY = True
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 # SPIDER_MIDDLEWARES = {
-#    'scraping.middlewares.ScrapingSpiderMiddleware': 543,
+#    'sakamichi_scraper.middlewares.SakamichiScraperSpiderMiddleware': 543,
 # }
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 # DOWNLOADER_MIDDLEWARES = {
-#    'scraping.middlewares.ScrapingDownloaderMiddleware': 543,
+#    'sakamichi_scraper.middlewares.SakamichiScraperDownloaderMiddleware': 543,
 # }
 
 # Enable or disable extensions
@@ -63,7 +63,7 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 # ITEM_PIPELINES = {
-#    'scraping.pipelines.ScrapingPipeline': 300,
+#    'sakamichi_scraper.pipelines.SakamichiScraperPipeline': 300,
 # }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -86,6 +86,5 @@ ROBOTSTXT_OBEY = True
 # HTTPCACHE_DIR = 'httpcache'
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
-
 
 FEED_EXPORT_ENCODING = "utf-8"
