@@ -3,10 +3,15 @@
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/items.html
 
+from dataclasses import dataclass
+from datetime import date
+
 import scrapy
 
 
-class SakamichiScraperItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
-    pass
+@dataclass
+class HinataSchedule:
+    schedule_id: str
+    title: str
+    schedule_type: str
+    schedule_date: date

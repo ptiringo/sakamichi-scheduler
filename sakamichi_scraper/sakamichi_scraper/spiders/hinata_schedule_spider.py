@@ -3,11 +3,14 @@ from datetime import date
 from urllib.parse import urlparse
 
 import scrapy
-from sakamichi_scheduler.model.schedule import ScheduleType
+
+from sakamichi_scraper.items import HinataSchedule
 
 
-class ScheduleSpider(scrapy.Spider):
-    name = "schedule"
+class HinataScheduleSpider(scrapy.Spider):
+    name = "hinata_schedule"
+
+    allowed_domains = "hinatazaka46.com"
 
     start_urls = [
         f"https://www.hinatazaka46.com/s/official/media/list?ima=0000&dy={date.today().strftime('%Y%m')}"
@@ -37,23 +40,14 @@ class ScheduleSpider(scrapy.Spider):
                 .strip()
             )
 
-            schedule_date = date(year, month, day_of_month)
-
             for li_item in div_list_group.css(
                 "ul.p-schedule__list li.p-schedule__item"
             ):
                 a = li_item.css("a")
 
-                id = urlparse(a.attrib["href"]).path.split("/")[-1]
-                title = a.css("p.c-schedule__text::text").get().strip()
-                schedule_type = a.css("div.c-schedule__category::text").get().strip()
-
-                yield {
-                    "id": id,
-                    "title": title,
-                    "schedule_type": schedule_type,
-                    "schedule_date": schedule_date,
-                }
-
-        print(year)
-        print(month)
+                yield HinataSchedule(
+                    schedule_id=urlparse(a.attrib["href"]).path.split("/")[-1],
+                    title=a.css("p.c-schedule__text::text").get().strip(),
+                    schedule_date=date(year, month, day_of_month),
+                    schedule_type=a.css("div.c-schedule__category::text").get().strip()
+                )
