@@ -6,7 +6,12 @@ authors = ["Matsui <ptiringo@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-Scrapy = "^2.5.0"
+Scrapy = "2.4.1"
+python-dateutil = "^2.8.2"
+scrapyd = "^1.2.1"
+scrapyd-client = "^1.1.0"
+google-cloud-storage = "^1.41.1"
+scrapyrt = "^0.12.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
