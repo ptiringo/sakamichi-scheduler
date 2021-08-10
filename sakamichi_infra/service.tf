@@ -5,3 +5,7 @@ resource "google_project_service" "cloudfunctions" {
 resource "google_project_service" "cloudbuild" {
   service = "cloudbuild.googleapis.com"
 }
+
+resource "google_project_service" "iam" {
+  service = "iam.googleapis.com"
+}
