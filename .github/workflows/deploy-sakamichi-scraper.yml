@@ -9,7 +9,6 @@ env:
   TAG: latest
   REGION: asia-northeast1
   HOSTNAME_LIST: asia-northeast1-docker.pkg.dev
-  SERVICE_NAME: sakamichi-scraper
 
 jobs:
   build-image:
@@ -45,6 +44,5 @@ jobs:
         id: deploy
         uses: google-github-actions/deploy-cloudrun@main
         with:
-          service: ${{ env.SERVICE_NAME }}
-          image: ${{ env.HOSTNAME_LIST }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE }}:${{ env.TAG }}
+          metadata: sakamichi_scraper/service.yml
           region: ${{ env.REGION }}
