@@ -10,7 +10,8 @@ RUN useradd --create-home ${USER} && \
 
 USER ${USER}
 
-COPY ./sakamichi_scraper scrapy.cfg poetry.lock pyproject.toml ${WORK_DIR}/
+COPY sakamichi_scraper ${WORK_DIR}/sakamichi_scraper/
+COPY scrapy.cfg poetry.lock pyproject.toml ${WORK_DIR}/
 
 WORKDIR /app
 
