@@ -29,3 +29,12 @@ resource "google_service_account_iam_member" "sakamichi_scraper_executor_service
   role               = "roles/iam.serviceAccountUser"
   member             = "serviceAccount:${google_service_account.ci_executor.email}"
 }
+
+#----------------------------------------------------------------------
+# google_storage_bucket_iam_member
+#----------------------------------------------------------------------
+resource "google_storage_bucket_iam_member" "hinata_schedule_storage_object_creator_sakamichi_scraper_executor" {
+  bucket = google_storage_bucket.hinata_schedule.name
+  role   = "roles/storage.objectCreator"
+  member = "serviceAccount:${google_service_account.sakamichi_scraper_executor.email}"
+}
