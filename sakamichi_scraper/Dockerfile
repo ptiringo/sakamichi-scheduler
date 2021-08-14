@@ -1,12 +1,13 @@
 FROM python:3.9
 
 ARG WORK_DIR=/app
+ARG LOG_DIR=/var/log/scrapyrt
 ARG USER=scrapyrt
 
 RUN useradd --create-home ${USER} && \
-    mkdir ${WORK_DIR} && \
-    chown ${USER} ${WORK_DIR} && \
-    chmod 0755 ${WORK_DIR}
+    mkdir ${WORK_DIR} ${LOG_DIR} && \
+    chown ${USER} ${WORK_DIR} ${LOG_DIR} && \
+    chmod 0755 ${WORK_DIR} ${LOG_DIR}
 
 USER ${USER}
 
@@ -24,4 +25,4 @@ RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/inst
 
 EXPOSE 8080
 
-ENTRYPOINT ["poetry", "run", "scrapyrt", "--port", "8080", "--ip", "0.0.0.0"]
+ENTRYPOINT ["poetry", "run", "scrapyrt", "--port", "8080", "--ip", "0.0.0.0", "-s", "LOG_DIR=/var/log/scrapyrt"]

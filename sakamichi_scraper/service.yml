@@ -1,10 +1,48 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
+  labels:
+    cloud.googleapis.com/location: asia-northeast1
   name: sakamichi-scraper
 spec:
   template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: "1"
     spec:
-      serviceAccountName: sakamichi-scraper-executor@sakamichi-noticer.iam.gserviceaccount.com
+      containerConcurrency: 80
       containers:
         - image: asia-northeast1-docker.pkg.dev/sakamichi-noticer/sakamichi-docker-repo/sakamichi-scraper:latest
+          ports:
+            - containerPort: 8080
+              name: http1
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 128Mi
+      serviceAccountName: sakamichi-scraper-executor@sakamichi-noticer.iam.gserviceaccount.com
+      timeoutSeconds: 300
+  traffic:
+    - latestRevision: true
+      percent: 100
+status:
+  address:
+    url: https://sakamichi-scraper-jjjknzr7la-an.a.run.app
+  conditions:
+    - lastTransitionTime: "2021-08-12T12:23:14.555365Z"
+      status: "True"
+      type: Ready
+    - lastTransitionTime: "2021-08-12T12:23:14.308638Z"
+      status: "True"
+      type: ConfigurationsReady
+    - lastTransitionTime: "2021-08-12T12:23:14.555365Z"
+      status: "True"
+      type: RoutesReady
+  latestCreatedRevisionName: sakamichi-scraper-hk7lq
+  latestReadyRevisionName: sakamichi-scraper-hk7lq
+  observedGeneration: 1
+  traffic:
+    - latestRevision: true
+      percent: 100
+      revisionName: sakamichi-scraper-hk7lq
+  url: https://sakamichi-scraper-jjjknzr7la-an.a.run.app
