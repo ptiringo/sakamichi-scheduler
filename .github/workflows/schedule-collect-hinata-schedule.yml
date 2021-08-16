@@ -22,7 +22,7 @@ jobs:
           export_default_credentials: true
 
       - name: Delete scheduler job
-        run: gcloud scheduler jobs delete ${{ env.JOB_NAME }}
+        run: gcloud scheduler jobs delete ${{ env.JOB_NAME }} --quiet
 
       - name: Create scheduler job
         run: |
