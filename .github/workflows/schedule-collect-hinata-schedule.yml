@@ -4,10 +4,6 @@ on: workflow_dispatch
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  REPOSITORY: sakamichi-docker-repo
-  IMAGE: sakamichi-scraper
-  TAG: latest
-  REGION: asia-northeast1
   JOB_NAME: collect-hinata-schedule
 
 jobs:
