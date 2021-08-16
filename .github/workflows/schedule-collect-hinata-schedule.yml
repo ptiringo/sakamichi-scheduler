@@ -1,4 +1,4 @@
-name: deploy-sakamichi-scraper
+name: schedule-collect-hinata-schedule
 
 on: workflow_dispatch
 
