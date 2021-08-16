@@ -28,6 +28,7 @@
 - [Google Cloud Platform](https://console.cloud.google.com/?hl=ja)
   - [Cloud Storage](https://cloud.google.com/storage/)
   - [Identity and Access Management (IAM)](https://cloud.google.com/iam/)
+  - [App Engine](https://cloud.google.com/appengine)
 
 ### sakamichi_noticer
 
@@ -48,3 +49,4 @@
 - [Docker](https://www.docker.com/)
 - [Google Cloud Platform](https://console.cloud.google.com/?hl=ja)
   - [Cloud Run](https://cloud.google.com/run)
+  - [Cloud Scheduler](https://cloud.google.com/scheduler)

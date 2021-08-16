@@ -13,3 +13,11 @@ resource "google_project_service" "iam" {
 resource "google_project_service" "compute" {
   service = "compute.googleapis.com"
 }
+
+resource "google_project_service" "cloudscheduler" {
+  service = "cloudscheduler.googleapis.com"
+}
+
+resource "google_project_service" "appengine" {
+  service = "appengine.googleapis.com"
+}

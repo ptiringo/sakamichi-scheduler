@@ -1,0 +1,36 @@
+name: deploy-sakamichi-scraper
+
+on: workflow_dispatch
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  REPOSITORY: sakamichi-docker-repo
+  IMAGE: sakamichi-scraper
+  TAG: latest
+  REGION: asia-northeast1
+  JOB_NAME: collect-hinata-schedule
+
+jobs:
+  schedule-collect-hinata-schedule:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - name: Configure Docker auth
+        run: gcloud scheduler jobs delete ${{ secrets.JOB_NAME }}
+
+      - name: Configure Docker auth
+        run: |
+          gcloud scheduler jobs create http ${{ secrets.JOB_NAME }} \
+            --schedule="every 6 hours" \
+            --uri="https://sakamichi-scraper-jjjknzr7la-an.a.run.app/crawl.json?spider_name=hinata_schedule&start_requests=true" \
+            --http-method GET \
+            --oidc-service-account-email="sakamichi-scraper-invoker@sakamichi-noticer.iam.gserviceaccount.com"
