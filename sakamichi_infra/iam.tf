@@ -21,6 +21,11 @@ resource "google_project_iam_member" "ci_executor_invoker_cloudscheduler_admin" 
   member = "serviceAccount:${google_service_account.ci_executor.email}"
 }
 
+resource "google_project_iam_member" "ci_executor_invoker_cloudfunctions_developer" {
+  role   = "roles/cloudfunctions.developer"
+  member = "serviceAccount:${google_service_account.ci_executor.email}"
+}
+
 resource "google_project_iam_member" "sakamichi_scraper_invoker_run_invoker" {
   role   = "roles/run.invoker"
   member = "serviceAccount:${google_service_account.sakamichi_scraper_invoker.email}"

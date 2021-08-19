@@ -42,6 +42,7 @@ jobs:
         with:
           name: hinata-schedule-notifier
           runtime: java11
+          region: asia-northeast1
           event_trigger_resource: gs://hinata-schedule
           event_trigger_type: google.storage.object.finalize
           source_dir: sakamichi_noticer/hinata-schedule-notifier/target/deploy
