@@ -21,8 +21,8 @@ resource "google_project_iam_member" "ci_executor_invoker_cloudscheduler_admin" 
   member = "serviceAccount:${google_service_account.ci_executor.email}"
 }
 
-resource "google_project_iam_member" "ci_executor_invoker_cloudfunctions_developer" {
-  role   = "roles/cloudfunctions.developer"
+resource "google_project_iam_member" "ci_executor_invoker_cloudfunctions_admin" {
+  role   = "roles/cloudfunctions.admin"
   member = "serviceAccount:${google_service_account.ci_executor.email}"
 }
 
