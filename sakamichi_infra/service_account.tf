@@ -23,6 +23,11 @@ resource "google_service_account" "sakamichi_scraper_invoker" {
   display_name = "sakamichi-scraper Invoker"
 }
 
+resource "google_service_account" "hinata_notifier_executor" {
+  account_id   = "hinata-notifier-executor"
+  display_name = "hinata-notifier Executor"
+}
+
 #----------------------------------------------------------------------
 # google_service_account_key
 #----------------------------------------------------------------------

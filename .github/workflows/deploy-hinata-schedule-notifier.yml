@@ -51,9 +51,11 @@ jobs:
       - name: Deploy Function
         run: |
           gcloud functions deploy hinata-schedule-notifier \
-            --entry-point org.springframework.cloud.function.adapter.gcp.GcfJarLauncher \
             --runtime java11 \
+            --region asia-northeast1 \
+            --entry-point org.springframework.cloud.function.adapter.gcp.GcfJarLauncher \
             --trigger-resource gs://hinata-schedule \
             --trigger-event google.storage.object.finalize \
             --source sakamichi_noticer/hinata-schedule-notifier/target/deploy \
-            --memory 512MB
+            --memory 512MB \
+            --service-account hinata-notifier-executor@sakamichi-noticer.iam.gserviceaccount.com
