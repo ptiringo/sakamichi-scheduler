@@ -31,6 +31,11 @@ resource "google_project_iam_member" "sakamichi_scraper_invoker_run_invoker" {
   member = "serviceAccount:${google_service_account.sakamichi_scraper_invoker.email}"
 }
 
+resource "google_project_iam_member" "hinata_notifier_executor_cloudfunctions_service_agent" {
+  role   = "roles/cloudfunctions.serviceAgent"
+  member = "serviceAccount:${google_service_account.hinata_notifier_executor.email}"
+}
+
 #----------------------------------------------------------------------
 # google_service_account_iam_member
 #----------------------------------------------------------------------
@@ -53,4 +58,10 @@ resource "google_storage_bucket_iam_member" "hinata_schedule_storage_object_crea
   bucket = google_storage_bucket.hinata_schedule.name
   role   = "roles/storage.objectCreator"
   member = "serviceAccount:${google_service_account.sakamichi_scraper_executor.email}"
+}
+
+resource "google_storage_bucket_iam_member" "hinata_schedule_storage_object_viewer_hinata_notifier_executor" {
+  bucket = google_storage_bucket.hinata_schedule.name
+  role   = "roles/storage.objectViewer"
+  member = "serviceAccount:${google_service_account.hinata_notifier_executor.email}"
 }

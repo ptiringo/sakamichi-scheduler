@@ -1,1 +1,1 @@
-Main-Class: tokyo.sakamichinotifier.hinataschedulenotifier.HinataScheduleNotifierApplication
+Main-Class: tokyo.sakamichinotifier.hinata.HinataScheduleNotifierApplication
