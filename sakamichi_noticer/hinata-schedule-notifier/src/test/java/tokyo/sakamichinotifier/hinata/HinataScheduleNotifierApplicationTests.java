@@ -21,16 +21,16 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @FunctionalSpringBootTest(webEnvironment = RANDOM_PORT)
 class HinataScheduleNotifierApplicationTests {
 
-    @Autowired
-    private TestRestTemplate rest;
+	@Autowired
+	private TestRestTemplate rest;
 
-    @Test
-    void contextLoads() throws URISyntaxException {
-        var object = new CloudStorageObject();
-        object.setBucket("hinata-schedule");
-        object.setName("hinata_schedule_2021-08-20T21-22-04.592475.jl");
-        var response = this.rest.postForEntity(new URI("/"), object, Void.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-    }
+	@Test
+	void contextLoads() throws URISyntaxException {
+		var object = new CloudStorageObject();
+		object.setBucket("hinata-schedule");
+		object.setName("hinata_schedule_2021-08-20T21-22-04.592475.jl");
+		var response = this.rest.postForEntity(new URI("/"), object, Void.class);
+		assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+	}
 
 }

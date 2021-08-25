@@ -6,6 +6,9 @@ import lombok.Data;
 
 @Data
 public class CloudStorageObject {
-    private String bucket;
-    private String name;
+
+	private String bucket;
+
+	private String name;
+
 }
