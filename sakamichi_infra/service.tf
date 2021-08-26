@@ -21,3 +21,7 @@ resource "google_project_service" "cloudscheduler" {
 resource "google_project_service" "appengine" {
   service = "appengine.googleapis.com"
 }
+
+resource "google_project_service" "datastore" {
+  service = "datastore.googleapis.com"
+}
