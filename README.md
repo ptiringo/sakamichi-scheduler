@@ -36,7 +36,9 @@
 
 #### 使用技術
 - [Java](https://www.java.com/ja/)
+- [Maven](https://maven.apache.org/)
 - [Spring Cloud Function](https://spring.io/projects/spring-cloud-function)
+- [Jackson](https://github.com/FasterXML/jackson)
 
 ### sakamichi scraper
 
