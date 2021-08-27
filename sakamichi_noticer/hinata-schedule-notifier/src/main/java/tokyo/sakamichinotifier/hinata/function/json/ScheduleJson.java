@@ -11,6 +11,7 @@ import tokyo.sakamichinotifier.hinata.model.ScheduleType;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Map;
 
 @Data
 public class ScheduleJson {
@@ -32,19 +33,21 @@ public class ScheduleJson {
 
 	public static class ScheduleTypeDeserializer extends JsonDeserializer<ScheduleType> {
 
+		private static final Map<String, ScheduleType> SCHEDULE_TYPE_MAPPINGS = Map.of(//
+				"テレビ", ScheduleType.TV, //
+				"ラジオ", ScheduleType.RADIO, //
+				"雑誌", ScheduleType.MAGAZINE, //
+				"イベント", ScheduleType.EVENT, //
+				"誕生日", ScheduleType.BIRTHDAY, //
+				"握手会", ScheduleType.HANDSHAKE_MEETING, //
+				"リリース", ScheduleType.RELEASE, //
+				"LIVE", ScheduleType.LIVE, //
+				"WEB", ScheduleType.WEB //
+		);
+
 		@Override
 		public ScheduleType deserialize(JsonParser parser, DeserializationContext context) throws IOException {
-			var value = parser.getValueAsString();
-			switch (value) {
-			case "テレビ":
-				return ScheduleType.TV;
-			case "ラジオ":
-				return ScheduleType.RADIO;
-			case "雑誌":
-				return ScheduleType.MAGAZINE;
-			default:
-				return ScheduleType.UNKNOWN;
-			}
+			return SCHEDULE_TYPE_MAPPINGS.getOrDefault(parser.getValueAsString(), ScheduleType.OTHER);
 		}
 
 	}
