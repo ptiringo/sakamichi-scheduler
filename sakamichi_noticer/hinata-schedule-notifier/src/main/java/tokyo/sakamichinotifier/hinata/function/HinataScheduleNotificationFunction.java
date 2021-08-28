@@ -26,6 +26,7 @@ public class HinataScheduleNotificationFunction implements Consumer<CloudStorage
 	@Override
 	public void accept(CloudStorageObject object) {
 		var schedules = cloudStorageService.readSchedules(object.getBucket(), object.getName());
+		schedules.forEach(s -> log.error(s.toString()));
 	}
 
 	@Data

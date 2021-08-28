@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tokyo.sakamichinotifier.hinata.function.json.ScheduleJson;
 import tokyo.sakamichinotifier.hinata.model.Schedule;
-import tokyo.sakamichinotifier.hinata.model.ScheduleRepository;
+//import tokyo.sakamichinotifier.hinata.model.ScheduleRepository;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -26,7 +26,7 @@ public class CloudStorageService {
 
 	private final ObjectMapper mapper;
 
-	private final ScheduleRepository scheduleRepository;
+	// private final ScheduleRepository scheduleRepository;
 
 	public List<Schedule> readSchedules(String bucketName, String blobName) {
 		var blob = storage.get(bucketName, blobName);
@@ -41,8 +41,8 @@ public class CloudStorageService {
 		}).collect(toList());
 	}
 
-	public void saveAllSchedules(List<Schedule> schedules) {
-		scheduleRepository.saveAll(schedules);
-	}
+	// public void saveAllSchedules(List<Schedule> schedules) {
+	// scheduleRepository.saveAll(schedules);
+	// }
 
 }
