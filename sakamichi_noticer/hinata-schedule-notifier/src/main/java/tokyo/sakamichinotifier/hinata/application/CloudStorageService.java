@@ -4,14 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.storage.Storage;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tokyo.sakamichinotifier.hinata.function.json.ScheduleJson;
 import tokyo.sakamichinotifier.hinata.model.Schedule;
 //import tokyo.sakamichinotifier.hinata.model.ScheduleRepository;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 

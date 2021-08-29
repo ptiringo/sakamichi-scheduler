@@ -5,3 +5,5 @@ spring:
     gcp:
       datastore:
         project-id: sakamichi-noticer
+    function:
+      definition: hinataScheduleNotificationFunction
