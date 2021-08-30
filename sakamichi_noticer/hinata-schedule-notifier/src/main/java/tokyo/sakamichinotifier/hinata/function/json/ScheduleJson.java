@@ -27,7 +27,7 @@ public class ScheduleJson {
 	private LocalDate scheduleStartDate;
 
 	public Schedule toSchedule() {
-		return new Schedule(scheduleId, title, scheduleType, scheduleDate);
+		return Schedule.create(scheduleId, title, scheduleType, scheduleDate);
 	}
 
 	public static class ScheduleTypeDeserializer extends JsonDeserializer<ScheduleType> {

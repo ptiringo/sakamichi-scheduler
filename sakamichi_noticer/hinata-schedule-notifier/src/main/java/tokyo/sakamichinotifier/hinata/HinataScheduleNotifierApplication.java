@@ -1,6 +1,7 @@
 package tokyo.sakamichinotifier.hinata;
 
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,6 +9,7 @@ import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilde
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
+@LineMessageHandler
 @Slf4j
 public class HinataScheduleNotifierApplication {
 

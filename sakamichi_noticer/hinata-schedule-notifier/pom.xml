@@ -53,7 +53,13 @@
 
         <dependency>
             <groupId>com.google.cloud</groupId>
-            <artifactId>spring-cloud-gcp-data-datastore</artifactId>
+            <artifactId>spring-cloud-gcp-starter-data-datastore</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.linecorp.bot</groupId>
+            <artifactId>line-bot-spring-boot</artifactId>
+            <version>4.5.0</version>
         </dependency>
 
         <dependency>
