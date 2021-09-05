@@ -1,0 +1,7 @@
+line.bot:
+  channel-token: ${sm://line-bot-channel-secret}
+  channel-secret: ${sm://line-bot-channel-token}
+my:
+  application:
+    line:
+      target-notification-target-user-id: ${sm://notification-target-line-user-id}

@@ -8,3 +8,6 @@ spring:
       datastore:
         emulator:
           enabled: true
+line.bot:
+  handler.path: /callback
+

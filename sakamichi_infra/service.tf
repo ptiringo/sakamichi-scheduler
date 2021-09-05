@@ -25,3 +25,7 @@ resource "google_project_service" "appengine" {
 resource "google_project_service" "datastore" {
   service = "datastore.googleapis.com"
 }
+
+resource "google_project_service" "secretmanager" {
+  service = "secretmanager.googleapis.com"
+}
