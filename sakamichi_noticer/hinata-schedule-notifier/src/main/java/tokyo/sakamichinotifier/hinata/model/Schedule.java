@@ -9,7 +9,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -35,13 +35,13 @@ public class Schedule {
 	private LocalDate scheduleDate;
 
 	@Field(name = "start_time")
-	private LocalTime startTime;
+	private LocalDateTime startTime;
 
 	@Field(name = "end_time")
-	private LocalTime endTime;
+	private LocalDateTime endTime;
 
-	protected Schedule(String id, String title, ScheduleType scheduleType, LocalDate scheduleDate, LocalTime startTime,
-			LocalTime endTime) {
+	protected Schedule(String id, String title, ScheduleType scheduleType, LocalDate scheduleDate,
+			LocalDateTime startTime, LocalDateTime endTime) {
 		this.id = id;
 		this.title = title;
 		this.scheduleType = scheduleType;
@@ -50,16 +50,16 @@ public class Schedule {
 		this.endTime = endTime;
 	}
 
-	public Optional<LocalTime> getStartTime() {
+	public Optional<LocalDateTime> getStartTime() {
 		return Optional.ofNullable(this.startTime);
 	}
 
-	public Optional<LocalTime> getEndTime() {
+	public Optional<LocalDateTime> getEndTime() {
 		return Optional.ofNullable(this.endTime);
 	}
 
 	public static Schedule create(@NonNull String id, @NonNull String title, @NonNull ScheduleType scheduleType,
-			@NonNull LocalDate scheduleDate, LocalTime startTime, LocalTime endTime) {
+			@NonNull LocalDate scheduleDate, LocalDateTime startTime, LocalDateTime endTime) {
 		return new Schedule(Objects.requireNonNull(id), Objects.requireNonNull(title),
 				Objects.requireNonNull(scheduleType), Objects.requireNonNull(scheduleDate), startTime, endTime);
 	}

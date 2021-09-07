@@ -1,5 +1,6 @@
 package tokyo.sakamichinotifier.hinata.function.json;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -10,7 +11,7 @@ import tokyo.sakamichinotifier.hinata.model.ScheduleType;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Data
@@ -25,9 +26,11 @@ public class ScheduleJson {
 
 	private LocalDate scheduleDate;
 
-	private LocalTime startTime;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime startTime;
 
-	private LocalTime endTime;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+	private LocalDateTime endTime;
 
 	public Schedule toSchedule() {
 		return Schedule.create(scheduleId, title, scheduleType, scheduleDate, startTime, endTime);
