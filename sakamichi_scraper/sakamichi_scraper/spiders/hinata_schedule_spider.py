@@ -1,5 +1,5 @@
 from collections.abc import Iterable
-from datetime import date
+from datetime import date, datetime, time, timedelta
 from urllib.parse import urlparse
 
 import scrapy
@@ -64,9 +64,43 @@ class HinataScheduleSpider(scrapy.Spider):
             ):
                 a = li_item.css("a")
 
+                print(
+                    urlparse(a.attrib["href"]).path.split("/")[-1],
+                    a.css("p.c-schedule__text::text").get().strip(),
+                )
+
+                schedule_date = date(year, month, day_of_month)
+
+                time_str: str = a.css("div.c-schedule__time--list::text").get()
+
+                start_time = None
+                end_time = None
+
+                if len(time_str) != 0:
+                    splited_time = time_str.strip().split("～")
+                    splited_start_time = splited_time[0].split(":")
+                    schedule_date_time = start_time = datetime.combine(
+                        schedule_date, time()
+                    )
+
+                    if len(splited_start_time) > 1:
+                        start_time = schedule_date_time + timedelta(
+                            hours=int(splited_start_time[0]),
+                            minutes=int(splited_start_time[1]),
+                        )
+
+                    if splited_time[-1]:
+                        splited_end_time = splited_time[-1].split(":")
+                        end_time = schedule_date_time + +timedelta(
+                            hours=int(splited_end_time[0]),
+                            minutes=int(splited_end_time[1]),
+                        )
+
                 yield HinataSchedule(
                     schedule_id=urlparse(a.attrib["href"]).path.split("/")[-1],
                     title=a.css("p.c-schedule__text::text").get().strip(),
                     schedule_date=date(year, month, day_of_month),
                     schedule_type=a.css("div.c-schedule__category::text").get().strip(),
+                    start_time=start_time if start_time else None,
+                    end_time=end_time if end_time else None,
                 )

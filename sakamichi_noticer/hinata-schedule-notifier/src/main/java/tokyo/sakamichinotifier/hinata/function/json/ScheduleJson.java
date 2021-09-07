@@ -10,6 +10,7 @@ import tokyo.sakamichinotifier.hinata.model.ScheduleType;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Map;
 
 @Data
@@ -24,10 +25,12 @@ public class ScheduleJson {
 
 	private LocalDate scheduleDate;
 
-	private LocalDate scheduleStartDate;
+	private LocalTime startTime;
+
+	private LocalTime endTime;
 
 	public Schedule toSchedule() {
-		return Schedule.create(scheduleId, title, scheduleType, scheduleDate);
+		return Schedule.create(scheduleId, title, scheduleType, scheduleDate, startTime, endTime);
 	}
 
 	public static class ScheduleTypeDeserializer extends JsonDeserializer<ScheduleType> {
