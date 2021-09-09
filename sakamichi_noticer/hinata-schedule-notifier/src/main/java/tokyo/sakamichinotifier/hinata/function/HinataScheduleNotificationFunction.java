@@ -9,6 +9,7 @@ import tokyo.sakamichinotifier.hinata.function.HinataScheduleNotificationFunctio
 
 import java.util.function.Consumer;
 
+/** スケジュール通知に使用する関数 */
 @Component
 @RequiredArgsConstructor
 @Slf4j
@@ -22,6 +23,7 @@ public class HinataScheduleNotificationFunction implements Consumer<CloudStorage
 				.forEach(hinataScheduleService::saveAndNotify);
 	}
 
+	/** Cloud Storage ファイルのメタデータ */
 	@Data
 	public static class CloudStorageObject {
 

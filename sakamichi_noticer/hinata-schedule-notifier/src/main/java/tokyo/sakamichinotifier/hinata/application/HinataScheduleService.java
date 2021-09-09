@@ -11,6 +11,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.springframework.stereotype.Service;
+import tokyo.sakamichinotifier.hinata.application.exception.HinataApplicationRuntimeException;
 import tokyo.sakamichinotifier.hinata.function.json.ScheduleJson;
 import tokyo.sakamichinotifier.hinata.model.Schedule;
 import tokyo.sakamichinotifier.hinata.model.ScheduleRepository;
@@ -25,6 +26,7 @@ import java.util.concurrent.ExecutionException;
 import static java.util.stream.Collectors.toList;
 import static tokyo.sakamichinotifier.hinata.model.ScheduleType.TV;
 
+/** アプリケーションサービス */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -58,7 +60,7 @@ public class HinataScheduleService {
 				return mapper.readValue(line, ScheduleJson.class).toSchedule();
 			}
 			catch (JsonProcessingException e) {
-				throw new RuntimeException(e);
+				throw new HinataApplicationRuntimeException(e);
 			}
 		}).collect(toList());
 	}

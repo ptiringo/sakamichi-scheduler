@@ -3,6 +3,7 @@ package tokyo.sakamichinotifier.hinata;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.cloud.function.context.test.FunctionalSpringBootTest;
 import org.springframework.http.HttpStatus;
 import tokyo.sakamichinotifier.hinata.function.HinataScheduleNotificationFunction.CloudStorageObject;
