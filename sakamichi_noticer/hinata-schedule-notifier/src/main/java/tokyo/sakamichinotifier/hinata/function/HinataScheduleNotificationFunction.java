@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import tokyo.sakamichinotifier.hinata.application.HinataScheduleService;
+import tokyo.sakamichinotifier.hinata.application.HinataScheduleApplicationService;
 import tokyo.sakamichinotifier.hinata.function.HinataScheduleNotificationFunction.CloudStorageObject;
 
 import java.util.function.Consumer;
@@ -15,12 +15,11 @@ import java.util.function.Consumer;
 @Slf4j
 public class HinataScheduleNotificationFunction implements Consumer<CloudStorageObject> {
 
-	private final HinataScheduleService hinataScheduleService;
+	private final HinataScheduleApplicationService hinataScheduleApplicationService;
 
 	@Override
 	public void accept(CloudStorageObject object) {
-		hinataScheduleService.readSchedules(object.getBucket(), object.getName())
-				.forEach(hinataScheduleService::saveAndNotify);
+		hinataScheduleApplicationService.fetchAndSaveNewSchedules(object.getBucket(), object.getName());
 	}
 
 	/** Cloud Storage ファイルのメタデータ */

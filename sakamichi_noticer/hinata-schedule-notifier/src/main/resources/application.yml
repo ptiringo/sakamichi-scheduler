@@ -10,4 +10,3 @@ spring:
           enabled: true
 line.bot:
   handler.path: /callback
-

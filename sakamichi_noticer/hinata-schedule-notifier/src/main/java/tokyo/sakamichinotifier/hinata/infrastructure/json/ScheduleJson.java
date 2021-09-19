@@ -1,4 +1,4 @@
-package tokyo.sakamichinotifier.hinata.function.json;
+package tokyo.sakamichinotifier.hinata.infrastructure.json;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonParser;
@@ -6,14 +6,15 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
-import tokyo.sakamichinotifier.hinata.model.Schedule;
-import tokyo.sakamichinotifier.hinata.model.ScheduleType;
+import tokyo.sakamichinotifier.hinata.domain.Schedule;
+import tokyo.sakamichinotifier.hinata.domain.ScheduleType;
 
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
 
+/** スケジュールの元データの JSON のマッピング用クラス */
 @Data
 public class ScheduleJson {
 
@@ -32,10 +33,15 @@ public class ScheduleJson {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime endTime;
 
+	/**
+	 * Schedule ドメインオブジェクトへの変換
+	 * @return 変換された Schedule オブジェクト
+	 */
 	public Schedule toSchedule() {
 		return Schedule.create(scheduleId, title, scheduleType, scheduleDate, startTime, endTime);
 	}
 
+	/** schedule_type フィールドの変換用デシリアライザ */
 	public static class ScheduleTypeDeserializer extends JsonDeserializer<ScheduleType> {
 
 		private static final Map<String, ScheduleType> SCHEDULE_TYPE_MAPPINGS = Map.of(//

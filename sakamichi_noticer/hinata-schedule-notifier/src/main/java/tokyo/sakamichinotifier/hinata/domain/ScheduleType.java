@@ -1,4 +1,4 @@
-package tokyo.sakamichinotifier.hinata.model;
+package tokyo.sakamichinotifier.hinata.domain;
 
 public enum ScheduleType {
 
