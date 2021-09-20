@@ -39,6 +39,9 @@
 - [Maven](https://maven.apache.org/)
 - [Spring Cloud Function](https://spring.io/projects/spring-cloud-function)
 - [Jackson](https://github.com/FasterXML/jackson)
+- [JUnit](https://junit.org/junit5/)
+- [AssertJ](https://assertj.github.io/doc/)
+- [mockito](https://site.mockito.org/)
 
 ### sakamichi scraper
 

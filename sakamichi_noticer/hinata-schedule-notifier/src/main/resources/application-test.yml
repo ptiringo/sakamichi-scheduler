@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    gcp:
+      datastore:
+        enabled: false
+      storage:
+        enabled: false

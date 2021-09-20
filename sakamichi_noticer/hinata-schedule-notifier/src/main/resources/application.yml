@@ -4,9 +4,7 @@ spring:
   cloud:
     function:
       definition: hinataScheduleNotificationFunction
-    gcp:
-      datastore:
-        emulator:
-          enabled: true
+  profiles:
+    active: dev
 line.bot:
   handler.path: /callback
