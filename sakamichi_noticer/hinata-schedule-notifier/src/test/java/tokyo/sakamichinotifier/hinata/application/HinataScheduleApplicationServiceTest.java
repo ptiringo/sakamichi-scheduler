@@ -63,12 +63,12 @@ class HinataScheduleApplicationServiceTest {
 		verify(scheduleRepository).save(nonExistingTvSchedule);
 		verify(scheduleRepository).save(nonExistingMagazineSchedule);
 
-//		verify(lineClient, times(1)).broadcast(captor.capture());
-// assertThat(captor.getValue().getMessage()).contains(nonExistingTvSchedule.getTitle(),
-// nonExistingTvSchedule.getStartTime().orElseThrow().format(NOTIFICATION_TIME_FORMATTER)
-// + "〜"
-// +
-// nonExistingTvSchedule.getEndTime().orElseThrow().format(NOTIFICATION_TIME_FORMATTER));
+		// verify(lineClient, times(1)).broadcast(captor.capture());
+		// assertThat(captor.getValue().getMessage()).contains(nonExistingTvSchedule.getTitle(),
+		// nonExistingTvSchedule.getStartTime().orElseThrow().format(NOTIFICATION_TIME_FORMATTER)
+		// + "〜"
+		// +
+		// nonExistingTvSchedule.getEndTime().orElseThrow().format(NOTIFICATION_TIME_FORMATTER));
 	}
 
 }
