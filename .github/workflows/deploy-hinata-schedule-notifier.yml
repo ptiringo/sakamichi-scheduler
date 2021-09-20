@@ -22,7 +22,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          key: ${{ runner.os }}-maven-${{ hashFiles('sakamichi_noticer/hinata-schedule-notifier/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
 
@@ -53,7 +53,6 @@ jobs:
         run: |
           gcloud functions deploy hinata-schedule-notifier \
             --runtime java11 \
-            --project ${{ env.PROJECT_ID }} \
             --region asia-northeast1 \
             --entry-point org.springframework.cloud.function.adapter.gcp.GcfJarLauncher \
             --trigger-resource gs://hinata-schedule \
