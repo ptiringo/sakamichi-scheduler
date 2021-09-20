@@ -4,6 +4,7 @@ on: workflow_dispatch
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  SPRING_PROFILES_ACTIVE: prod
 
 jobs:
   deploy-hinata-schedule-notifier:
@@ -52,6 +53,7 @@ jobs:
         run: |
           gcloud functions deploy hinata-schedule-notifier \
             --runtime java11 \
+            --project ${{ env.PROJECT_ID }} \
             --region asia-northeast1 \
             --entry-point org.springframework.cloud.function.adapter.gcp.GcfJarLauncher \
             --trigger-resource gs://hinata-schedule \
