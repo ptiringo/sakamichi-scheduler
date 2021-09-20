@@ -38,26 +38,26 @@ jobs:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
 
-      # - name: Deploy Function
-      #   uses: google-github-actions/deploy-cloud-functions@main
-      #   with:
-      #     name: hinata-schedule-notifier
-      #     runtime: java11
-      #     region: asia-northeast1
-      #     entry_point: org.springframework.cloud.function.adapter.gcp.GcfJarLauncher
-      #     event_trigger_resource: gs://hinata-schedule
-      #     event_trigger_type: google.storage.object.finalize
-      #     source_dir: sakamichi_noticer/hinata-schedule-notifier/target/deploy
-      #     memory_mb: 512
-
       - name: Deploy Function
-        run: |
-          gcloud functions deploy hinata-schedule-notifier \
-            --runtime java11 \
-            --region asia-northeast1 \
-            --entry-point org.springframework.cloud.function.adapter.gcp.GcfJarLauncher \
-            --trigger-resource gs://hinata-schedule \
-            --trigger-event google.storage.object.finalize \
-            --source sakamichi_noticer/hinata-schedule-notifier/target/deploy \
-            --memory 512MB \
-            --service-account hinata-notifier-executor@sakamichi-noticer.iam.gserviceaccount.com
+        uses: google-github-actions/deploy-cloud-functions@main
+        with:
+          name: hinata-schedule-notifier
+          runtime: java11
+          region: asia-northeast1
+          entry_point: org.springframework.cloud.function.adapter.gcp.GcfJarLauncher
+          event_trigger_resource: gs://hinata-schedule
+          event_trigger_type: google.storage.object.finalize
+          source_dir: sakamichi_noticer/hinata-schedule-notifier/target/deploy
+          memory_mb: 512
+          service_account_email: hinata-notifier-executor@${{ secrets.GCP_PROJECT_ID }}.iam.gserviceaccount.com
+      # - name: Deploy Function
+      #   run: |
+      #     gcloud functions deploy hinata-schedule-notifier \
+      #       --runtime java11 \
+      #       --region asia-northeast1 \
+      #       --entry-point org.springframework.cloud.function.adapter.gcp.GcfJarLauncher \
+      #       --trigger-resource gs://hinata-schedule \
+      #       --trigger-event google.storage.object.finalize \
+      #       --source sakamichi_noticer/hinata-schedule-notifier/target/deploy \
+      #       --memory 512MB \
+      #       --service-account hinata-notifier-executor@sakamichi-noticer.iam.gserviceaccount.com
