@@ -46,7 +46,7 @@ public class HinataScheduleApplicationService {
 						() -> {
 							var savedSchedule = saveNewSchedule(schedule);
 							if (savedSchedule.getScheduleType() == TV) {
-								pushNotificationMessage(savedSchedule);
+								// pushNotificationMessage(savedSchedule);
 							}
 						}));
 	}
