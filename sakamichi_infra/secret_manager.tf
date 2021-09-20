@@ -13,11 +13,3 @@ resource "google_secret_manager_secret" "line_bot_channel_secret" {
     automatic = true
   }
 }
-
-resource "google_secret_manager_secret" "notification_target_line_user_id" {
-  secret_id = "notification-target-line-user-id"
-
-  replication {
-    automatic = true
-  }
-}

@@ -65,3 +65,18 @@ resource "google_storage_bucket_iam_member" "hinata_schedule_storage_object_view
   role   = "roles/storage.objectViewer"
   member = "serviceAccount:${google_service_account.hinata_notifier_executor.email}"
 }
+
+#----------------------------------------------------------------------
+# google_secret_manager_secret_iam_policy
+#----------------------------------------------------------------------
+resource "google_secret_manager_secret_iam_member" "line_bot_channel_token_secretmanager_secret_accessor_hinata_notifier_executor" {
+  secret_id = google_secret_manager_secret.line_bot_channel_token.secret_id
+  role      = "roles/secretmanager.secretAccessor"
+  member    = "serviceAccount:${google_service_account.hinata_notifier_executor.email}"
+}
+
+resource "google_secret_manager_secret_iam_member" "line_bot_channel_secret_secretmanager_secret_accessor_hinata_notifier_executor" {
+  secret_id = google_secret_manager_secret.line_bot_channel_secret.secret_id
+  role      = "roles/secretmanager.secretAccessor"
+  member    = "serviceAccount:${google_service_account.hinata_notifier_executor.email}"
+}
