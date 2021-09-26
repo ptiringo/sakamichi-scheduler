@@ -2,11 +2,13 @@ package tokyo.sakamichinotifier.hinata.application;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jspecify.nullness.NullMarked;
+import org.jspecify.nullness.Nullable;
 import org.springframework.stereotype.Service;
 import tokyo.sakamichinotifier.hinata.domain.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -16,6 +18,7 @@ import static tokyo.sakamichinotifier.hinata.domain.ScheduleType.TV;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@NullMarked
 public class HinataScheduleApplicationService {
 
 	/** 通知に使用する日付のフォーマッター */
@@ -36,13 +39,15 @@ public class HinataScheduleApplicationService {
 	 * @param bucketName バケット名
 	 * @param blobName オブジェクトのパス
 	 */
-	public void fetchAndSaveNewSchedules(@NonNull String bucketName, @NonNull String blobName) {
+	public void fetchAndSaveNewSchedules(String bucketName, String blobName) {
 		cloudStorageClient.fetchNewSchedules(bucketName, blobName)
 				.forEach(schedule -> scheduleRepository.findById(schedule.getId()).ifPresentOrElse( //
-						existingSchedule -> updateExistingSchedule(schedule, //
-								existingSchedule.getTitle(), //
-								existingSchedule.getScheduleType(), //
-								existingSchedule.getScheduleDate()), //
+						existingSchedule -> updateExistingSchedule(existingSchedule, //
+								schedule.getTitle(), //
+								schedule.getScheduleType(), //
+								schedule.getScheduleDate(), //
+								schedule.getStartTime().orElse(null), //
+								schedule.getEndTime().orElse(null)), //
 						() -> {
 							var savedSchedule = saveNewSchedule(schedule);
 							if (savedSchedule.getScheduleType() == TV) {
@@ -51,20 +56,20 @@ public class HinataScheduleApplicationService {
 						}));
 	}
 
-	private void updateExistingSchedule(@NonNull Schedule schedule, @NonNull String newTitle,
-			@NonNull ScheduleType newScheduleType, LocalDate newScheduleDate) {
-		schedule.update(newTitle, newScheduleType, newScheduleDate);
+	private void updateExistingSchedule(Schedule schedule, String newTitle, ScheduleType newScheduleType,
+			@Nullable LocalDate newScheduleDate, @Nullable LocalDateTime startTime, @Nullable LocalDateTime endTime) {
+		schedule.update(newTitle, newScheduleType, newScheduleDate, startTime, endTime);
 		var savedSchedule = scheduleRepository.save(schedule);
 		log.info("hinata schedule updated: {}", savedSchedule);
 	}
 
-	private Schedule saveNewSchedule(@NonNull Schedule schedule) {
+	private Schedule saveNewSchedule(Schedule schedule) {
 		var savedSchedule = scheduleRepository.save(schedule);
 		log.info("hinata schedule saved: {}", savedSchedule);
 		return savedSchedule;
 	}
 
-	private void pushNotificationMessage(@NonNull Schedule savedSchedule) {
+	private void pushNotificationMessage(Schedule savedSchedule) {
 		var message = "＜日向坂46☀️＞" + "\n" //
 				+ savedSchedule.getTitle() + "\n" //
 				+ savedSchedule.getScheduleDate().format(NOTIFICATION_DATE_FORMATTER);

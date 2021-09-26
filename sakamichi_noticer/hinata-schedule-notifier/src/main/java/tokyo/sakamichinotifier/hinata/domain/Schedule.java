@@ -4,8 +4,9 @@ import com.google.cloud.spring.data.datastore.core.mapping.Entity;
 import com.google.cloud.spring.data.datastore.core.mapping.Field;
 import lombok.Getter;
 import lombok.ToString;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+
+import org.jspecify.nullness.NullMarked;
+import org.jspecify.nullness.Nullable;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 @Entity(name = "hinata_schedule")
 @ToString
+@NullMarked
 public class Schedule {
 
 	@Id
@@ -40,8 +42,8 @@ public class Schedule {
 	@Field(name = "end_time")
 	private LocalDateTime endTime;
 
-	protected Schedule(String id, String title, ScheduleType scheduleType, LocalDate scheduleDate,
-			LocalDateTime startTime, LocalDateTime endTime) {
+	protected Schedule(@Nullable String id, @Nullable String title, @Nullable ScheduleType scheduleType,
+			@Nullable LocalDate scheduleDate, @Nullable LocalDateTime startTime, @Nullable LocalDateTime endTime) {
 		this.id = id;
 		this.title = title;
 		this.scheduleType = scheduleType;
@@ -58,16 +60,19 @@ public class Schedule {
 		return Optional.ofNullable(this.endTime);
 	}
 
-	public static Schedule create(@NonNull String id, @NonNull String title, @NonNull ScheduleType scheduleType,
-			@NonNull LocalDate scheduleDate, LocalDateTime startTime, LocalDateTime endTime) {
+	public static Schedule create(String id, String title, ScheduleType scheduleType, LocalDate scheduleDate,
+			@Nullable LocalDateTime startTime, @Nullable LocalDateTime endTime) {
 		return new Schedule(Objects.requireNonNull(id), Objects.requireNonNull(title),
 				Objects.requireNonNull(scheduleType), Objects.requireNonNull(scheduleDate), startTime, endTime);
 	}
 
-	public void update(@Nullable String newTitle, ScheduleType newScheduleType, LocalDate newScheduleDate) {
+	public void update(@Nullable String newTitle, @Nullable ScheduleType newScheduleType,
+			@Nullable LocalDate newScheduleDate, @Nullable LocalDateTime startTime, @Nullable LocalDateTime endTime) {
 		this.title = newTitle;
 		this.scheduleType = newScheduleType;
 		this.scheduleDate = newScheduleDate;
+		this.startTime = startTime;
+		this.endTime = endTime;
 	}
 
 	public boolean hasTime() {

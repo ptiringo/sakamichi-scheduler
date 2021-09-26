@@ -1,9 +1,10 @@
 package tokyo.sakamichinotifier.hinata.domain;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jspecify.nullness.NullMarked;
 
+@NullMarked
 public interface LineClient {
 
-	void broadcast(@NonNull LineMessage lineMessage);
+	void broadcast(LineMessage lineMessage);
 
 }

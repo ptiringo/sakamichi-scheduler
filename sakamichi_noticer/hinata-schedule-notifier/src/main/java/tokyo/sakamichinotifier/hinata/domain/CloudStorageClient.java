@@ -1,11 +1,12 @@
 package tokyo.sakamichinotifier.hinata.domain;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jspecify.nullness.NullMarked;
 
 import java.util.List;
 
+@NullMarked
 public interface CloudStorageClient {
 
-	List<Schedule> fetchNewSchedules(@NonNull String bucketName, @NonNull String blobName);
+	List<Schedule> fetchNewSchedules(String bucketName, String blobName);
 
 }

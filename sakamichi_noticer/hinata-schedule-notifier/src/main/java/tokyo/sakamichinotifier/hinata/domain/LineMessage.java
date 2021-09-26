@@ -1,16 +1,17 @@
 package tokyo.sakamichinotifier.hinata.domain;
 
 import lombok.Getter;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jspecify.nullness.NullMarked;
 
 import java.util.Objects;
 
+@NullMarked
 public class LineMessage {
 
 	@Getter
 	private final String message;
 
-	public LineMessage(@NonNull String message) {
+	public LineMessage(String message) {
 		this.message = Objects.requireNonNull(message);
 	}
 
