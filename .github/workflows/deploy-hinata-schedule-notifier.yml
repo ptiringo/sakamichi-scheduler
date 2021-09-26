@@ -19,7 +19,7 @@ jobs:
           cache: maven
 
       - name: Build Function
-        run: ./mvnw package -Dspring.profiles.active=prod
+        run: ./mvnw package
         working-directory: sakamichi_noticer/hinata-schedule-notifier/
 
       - name: Set up Cloud SDK

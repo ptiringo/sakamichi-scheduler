@@ -10,4 +10,5 @@ gcloud functions deploy hinata-schedule-notifier \
   --trigger-event google.storage.object.finalize \
   --source target/deploy \
   --memory 512MB \
+  --set-env-vars SPRING_PROFILES_ACTIVE=prod \
   --service-account hinata-notifier-executor@${PROJECT_ID}.iam.gserviceaccount.com
