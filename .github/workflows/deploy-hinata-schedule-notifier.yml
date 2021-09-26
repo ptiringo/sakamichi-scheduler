@@ -4,7 +4,6 @@ on: workflow_dispatch
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  SPRING_PROFILES_ACTIVE: prod
 
 jobs:
   deploy-hinata-schedule-notifier:
@@ -22,6 +21,8 @@ jobs:
       - name: Build Function
         run: ./mvnw package
         working-directory: sakamichi_noticer/hinata-schedule-notifier/
+        env:
+          SPRING_PROFILES_ACTIVE: prod
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master

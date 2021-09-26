@@ -36,6 +36,11 @@ resource "google_project_iam_member" "hinata_notifier_executor_cloudfunctions_se
   member = "serviceAccount:${google_service_account.hinata_notifier_executor.email}"
 }
 
+resource "google_project_iam_member" "hinata_notifier_executor_datastore_user" {
+  role   = "roles/datastore.user"
+  member = "serviceAccount:${google_service_account.hinata_notifier_executor.email}"
+}
+
 #----------------------------------------------------------------------
 # google_service_account_iam_member
 #----------------------------------------------------------------------
