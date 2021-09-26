@@ -10,7 +10,8 @@ import tokyo.sakamichinotifier.hinata.domain.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.concurrent.CompletableFuture;
 
 import static tokyo.sakamichinotifier.hinata.domain.ScheduleType.TV;
 
@@ -40,6 +41,8 @@ public class HinataScheduleApplicationService {
 	 * @param blobName オブジェクトのパス
 	 */
 	public void fetchAndSaveNewSchedules(String bucketName, String blobName) {
+		var lineResponseFutures = new ArrayList<CompletableFuture<LineBotApiResponse>>();
+
 		cloudStorageClient.fetchNewSchedules(bucketName, blobName)
 				.forEach(schedule -> scheduleRepository.findById(schedule.getId()).ifPresentOrElse( //
 						existingSchedule -> updateExistingSchedule(existingSchedule, //
@@ -51,25 +54,40 @@ public class HinataScheduleApplicationService {
 						() -> {
 							var savedSchedule = saveNewSchedule(schedule);
 							if (savedSchedule.getScheduleType() == TV) {
-								// pushNotificationMessage(savedSchedule);
+								var lineResponseFuture = pushNotificationMessage(savedSchedule);
+								lineResponseFutures.add(lineResponseFuture);
 							}
 						}));
+
+		if (!lineResponseFutures.isEmpty()) {
+			CompletableFuture.allOf(lineResponseFutures.toArray(new CompletableFuture[0]))
+					.whenComplete((response, ex) -> {
+						if (ex == null) {
+							log.info("LINE broadcast succeeded.");
+						}
+						else {
+							log.error("LINE broadcast failed.", ex);
+						}
+					});
+		}
 	}
 
 	private void updateExistingSchedule(Schedule schedule, String newTitle, ScheduleType newScheduleType,
 			@Nullable LocalDate newScheduleDate, @Nullable LocalDateTime startTime, @Nullable LocalDateTime endTime) {
+		log.debug("schedule ({}) found", schedule.getId());
 		schedule.update(newTitle, newScheduleType, newScheduleDate, startTime, endTime);
 		var savedSchedule = scheduleRepository.save(schedule);
 		log.info("hinata schedule updated: {}", savedSchedule);
 	}
 
 	private Schedule saveNewSchedule(Schedule schedule) {
+		log.debug("schedule ({}) not found", schedule.getId());
 		var savedSchedule = scheduleRepository.save(schedule);
 		log.info("hinata schedule saved: {}", savedSchedule);
 		return savedSchedule;
 	}
 
-	private void pushNotificationMessage(Schedule savedSchedule) {
+	private CompletableFuture<LineBotApiResponse> pushNotificationMessage(Schedule savedSchedule) {
 		var message = "＜日向坂46☀️＞" + "\n" //
 				+ savedSchedule.getTitle() + "\n" //
 				+ savedSchedule.getScheduleDate().format(NOTIFICATION_DATE_FORMATTER);
@@ -81,7 +99,7 @@ public class HinataScheduleApplicationService {
 					+ savedSchedule.getEndTime().map(time -> time.format(NOTIFICATION_TIME_FORMATTER)).orElse("");
 		}
 
-		lineClient.broadcast(new LineMessage(message));
+		return lineClient.broadcast(new LineMessage(message));
 	}
 
 }

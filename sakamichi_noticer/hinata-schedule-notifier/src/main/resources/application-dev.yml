@@ -3,4 +3,9 @@ spring:
     gcp:
       datastore:
         emulator:
-          enabled: true
+          enabled: false
+debug: true
+logging:
+  level:
+    tokyo:
+      sakamichinotifier: DEBUG

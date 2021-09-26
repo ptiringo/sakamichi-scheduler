@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -56,6 +57,7 @@ class HinataScheduleApplicationServiceTest {
 		when(scheduleRepository.findById(existingSchedule.getId())).thenReturn(Optional.of(existingSchedule));
 		when(scheduleRepository.save(nonExistingTvSchedule)).thenReturn(nonExistingTvSchedule);
 		when(scheduleRepository.save(nonExistingMagazineSchedule)).thenReturn(nonExistingMagazineSchedule);
+		when(lineClient.broadcast(any())).thenReturn(new CompletableFuture<>());
 
 		applicationService.fetchAndSaveNewSchedules(bucketName, blobName);
 
@@ -63,12 +65,10 @@ class HinataScheduleApplicationServiceTest {
 		verify(scheduleRepository).save(nonExistingTvSchedule);
 		verify(scheduleRepository).save(nonExistingMagazineSchedule);
 
-		// verify(lineClient, times(1)).broadcast(captor.capture());
-		// assertThat(captor.getValue().getMessage()).contains(nonExistingTvSchedule.getTitle(),
-		// nonExistingTvSchedule.getStartTime().orElseThrow().format(NOTIFICATION_TIME_FORMATTER)
-		// + "〜"
-		// +
-		// nonExistingTvSchedule.getEndTime().orElseThrow().format(NOTIFICATION_TIME_FORMATTER));
+		verify(lineClient, times(1)).broadcast(captor.capture());
+		assertThat(captor.getValue().getMessage()).contains(nonExistingTvSchedule.getTitle(),
+				nonExistingTvSchedule.getStartTime().orElseThrow().format(NOTIFICATION_TIME_FORMATTER) + "〜"
+						+ nonExistingTvSchedule.getEndTime().orElseThrow().format(NOTIFICATION_TIME_FORMATTER));
 	}
 
 }

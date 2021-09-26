@@ -2,9 +2,11 @@ package tokyo.sakamichinotifier.hinata.domain;
 
 import org.jspecify.nullness.NullMarked;
 
+import java.util.concurrent.CompletableFuture;
+
 @NullMarked
 public interface LineClient {
 
-	void broadcast(LineMessage lineMessage);
+	CompletableFuture<LineBotApiResponse> broadcast(LineMessage lineMessage);
 
 }
