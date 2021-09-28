@@ -17,6 +17,8 @@ with Diagram(
         >> Run("sakamichi-scraper")
         >> Storage("hinata-schedule")
         >> Functions("sakamichi-noticer")
-        >> Firestore("hinata-schedule")
-        >> Custom("LINE", str(Path("./resources/LINE_Brand_icon.png").resolve()))
+        >> [
+            Firestore("hinata-schedule"),
+            Custom("LINE", str(Path("./resources/LINE_Brand_icon.png").resolve())),
+        ]
     )
