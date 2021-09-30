@@ -17,7 +17,7 @@ public class HinataScheduleNotifierApplication {
 
 	@Bean
 	public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
-		return builder -> builder.modules(new JavaTimeModule()).build();
+		return builder -> builder.modules(new JavaTimeModule()).timeZone("Asia/Tokyo").build();
 	}
 
 }

@@ -1,6 +1,6 @@
 # Sakamichi Schedule Notification
 
-- 坂道グループのスケジュールを収集して通知を行います。
+- 坂道グループのスケジュールを公式サイトから収集し、新規のスケジュールをLINEで通知します。
 
 ## Architecture
 

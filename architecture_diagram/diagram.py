@@ -13,7 +13,7 @@ with Diagram(
     show=True,
 ):
     (
-        Scheduler("scheduler")
+        Scheduler("collect-hinata-schedule")
         >> Run("sakamichi-scraper")
         >> Storage("hinata-schedule")
         >> Functions("sakamichi-noticer")
