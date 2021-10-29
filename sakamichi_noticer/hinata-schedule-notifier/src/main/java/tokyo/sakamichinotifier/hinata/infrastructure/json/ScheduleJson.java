@@ -12,11 +12,14 @@ import tokyo.sakamichinotifier.hinata.domain.ScheduleType;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Map;
 
 /** スケジュールの元データの JSON のマッピング用クラス */
 @Data
 public class ScheduleJson {
+
+	private static final ZoneId DEFAULT_TIMEZONE = ZoneId.of("Asia/Tokyo");
 
 	private String scheduleId;
 
@@ -38,7 +41,8 @@ public class ScheduleJson {
 	 * @return 変換された Schedule オブジェクト
 	 */
 	public Schedule toSchedule() {
-		return Schedule.create(scheduleId, title, scheduleType, scheduleDate, startTime, endTime);
+		return Schedule.create(scheduleId, title, scheduleType, scheduleDate, startTime.atZone(DEFAULT_TIMEZONE),
+				endTime.atZone(DEFAULT_TIMEZONE));
 	}
 
 	/** schedule_type フィールドの変換用デシリアライザ */

@@ -11,6 +11,7 @@ import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -37,13 +38,13 @@ public class Schedule {
 	private LocalDate scheduleDate;
 
 	@Field(name = "start_time")
-	private LocalDateTime startTime;
+	private ZonedDateTime startTime;
 
 	@Field(name = "end_time")
-	private LocalDateTime endTime;
+	private ZonedDateTime endTime;
 
 	protected Schedule(@Nullable String id, @Nullable String title, @Nullable ScheduleType scheduleType,
-			@Nullable LocalDate scheduleDate, @Nullable LocalDateTime startTime, @Nullable LocalDateTime endTime) {
+			@Nullable LocalDate scheduleDate, @Nullable ZonedDateTime startTime, @Nullable ZonedDateTime endTime) {
 		this.id = id;
 		this.title = title;
 		this.scheduleType = scheduleType;
@@ -52,22 +53,22 @@ public class Schedule {
 		this.endTime = endTime;
 	}
 
-	public Optional<LocalDateTime> getStartTime() {
+	public Optional<ZonedDateTime> getStartTime() {
 		return Optional.ofNullable(this.startTime);
 	}
 
-	public Optional<LocalDateTime> getEndTime() {
+	public Optional<ZonedDateTime> getEndTime() {
 		return Optional.ofNullable(this.endTime);
 	}
 
 	public static Schedule create(String id, String title, ScheduleType scheduleType, LocalDate scheduleDate,
-			@Nullable LocalDateTime startTime, @Nullable LocalDateTime endTime) {
+			@Nullable ZonedDateTime startTime, @Nullable ZonedDateTime endTime) {
 		return new Schedule(Objects.requireNonNull(id), Objects.requireNonNull(title),
 				Objects.requireNonNull(scheduleType), Objects.requireNonNull(scheduleDate), startTime, endTime);
 	}
 
 	public void update(@Nullable String newTitle, @Nullable ScheduleType newScheduleType,
-			@Nullable LocalDate newScheduleDate, @Nullable LocalDateTime startTime, @Nullable LocalDateTime endTime) {
+			@Nullable LocalDate newScheduleDate, @Nullable ZonedDateTime startTime, @Nullable ZonedDateTime endTime) {
 		this.title = newTitle;
 		this.scheduleType = newScheduleType;
 		this.scheduleDate = newScheduleDate;

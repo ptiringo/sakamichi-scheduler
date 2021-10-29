@@ -11,6 +11,8 @@ import tokyo.sakamichinotifier.hinata.domain.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -45,12 +47,19 @@ class HinataScheduleApplicationServiceTest {
 		var bucketName = "hinata-schedule";
 		var blobName = "hinata_schedule_2021-08-20T21-22-04.592475.jl";
 
+		var zoneId = ZoneId.of("Asia/Tokyo");
+
+		var existingScheduleStartTime = ZonedDateTime.of(2021, 1, 1, 12, 0, 0, 0, zoneId);
 		var existingSchedule = Schedule.create("existing_id", "existing_schedule", ScheduleType.TV,
-				LocalDate.of(2021, 1, 1), LocalDateTime.of(2021, 1, 1, 12, 0), LocalDateTime.of(2021, 1, 1, 15, 0));
+				LocalDate.of(2021, 1, 1), existingScheduleStartTime, existingScheduleStartTime.plusHours(3));
+
+		var nonExistingTvScheduleStartTime = ZonedDateTime.of(2021, 1, 1, 12, 0, 0, 0, zoneId);
 		var nonExistingTvSchedule = Schedule.create("non_existing_tv_id", "non_existing_tv_schedule", ScheduleType.TV,
-				LocalDate.of(2021, 1, 1), LocalDateTime.of(2021, 1, 1, 12, 0), LocalDateTime.of(2021, 1, 1, 15, 0));
+				LocalDate.of(2021, 1, 1), nonExistingTvScheduleStartTime, nonExistingTvScheduleStartTime.plusHours(3));
+
 		var nonExistingMagazineSchedule = Schedule.create("non_existing_magazine_id", "non_existing_magazine_schedule",
 				ScheduleType.MAGAZINE, LocalDate.of(2021, 1, 1), null, null);
+
 		var schedules = List.of(existingSchedule, nonExistingTvSchedule, nonExistingMagazineSchedule);
 
 		when(cloudStorageClient.fetchNewSchedules(bucketName, blobName)).thenReturn(schedules);
