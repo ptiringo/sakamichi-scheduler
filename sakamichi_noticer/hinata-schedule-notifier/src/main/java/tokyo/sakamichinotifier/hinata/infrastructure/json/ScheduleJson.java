@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
+import org.jspecify.nullness.NullMarked;
+import org.jspecify.nullness.Nullable;
 import tokyo.sakamichinotifier.hinata.domain.Schedule;
 import tokyo.sakamichinotifier.hinata.domain.ScheduleType;
 
@@ -14,9 +16,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Map;
+import java.util.Optional;
 
 /** スケジュールの元データの JSON のマッピング用クラス */
 @Data
+@NullMarked
 public class ScheduleJson {
 
 	private static final ZoneId DEFAULT_TIMEZONE = ZoneId.of("Asia/Tokyo");
@@ -34,6 +38,7 @@ public class ScheduleJson {
 	private LocalDateTime startTime;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+	@Nullable
 	private LocalDateTime endTime;
 
 	/**
@@ -42,7 +47,7 @@ public class ScheduleJson {
 	 */
 	public Schedule toSchedule() {
 		return Schedule.create(scheduleId, title, scheduleType, scheduleDate, startTime.atZone(DEFAULT_TIMEZONE),
-				endTime.atZone(DEFAULT_TIMEZONE));
+				Optional.ofNullable(endTime).map(x -> x.atZone(DEFAULT_TIMEZONE)).orElse(null));
 	}
 
 	/** schedule_type フィールドの変換用デシリアライザ */
