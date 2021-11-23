@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import tokyo.sakamichinotifier.hinata.domain.*;
 
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
@@ -73,7 +73,7 @@ public class HinataScheduleApplicationService {
 	}
 
 	private void updateExistingSchedule(Schedule schedule, String newTitle, ScheduleType newScheduleType,
-			@Nullable LocalDate newScheduleDate, @Nullable ZonedDateTime startTime, @Nullable ZonedDateTime endTime) {
+			@Nullable LocalDate newScheduleDate, @Nullable OffsetDateTime startTime, @Nullable OffsetDateTime endTime) {
 		log.debug("schedule ({}) found", schedule.getId());
 		schedule.update(newTitle, newScheduleType, newScheduleDate, startTime, endTime);
 		var savedSchedule = scheduleRepository.save(schedule);

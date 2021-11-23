@@ -19,6 +19,7 @@ public class HinataScheduleNotificationFunction implements Consumer<CloudStorage
 
 	@Override
 	public void accept(CloudStorageObject object) {
+		log.info("bucket: {}, object: {}", object.getBucket(), object.getName());
 		hinataScheduleApplicationService.fetchAndSaveNewSchedules(object.getBucket(), object.getName());
 	}
 
