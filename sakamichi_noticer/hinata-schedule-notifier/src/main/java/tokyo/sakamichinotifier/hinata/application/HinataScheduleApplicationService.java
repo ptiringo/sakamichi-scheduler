@@ -27,7 +27,7 @@ public class HinataScheduleApplicationService {
 	private static final DateTimeFormatter NOTIFICATION_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy年MM月dd日");
 
 	/** 通知に使用する時間のフォーマッター */
-	private static final DateTimeFormatter NOTIFICATION_TIME_FORMATTER = DateTimeFormatter.ofPattern("hh:mm");
+	private static final DateTimeFormatter NOTIFICATION_TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
 	private static final ZoneId DEFAULT_TIMEZONE = ZoneId.of("Asia/Tokyo");
 
