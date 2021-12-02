@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.cloud.storage.Storage;
 import lombok.RequiredArgsConstructor;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import tokyo.sakamichinotifier.hinata.application.exception.HinataApplicationRuntimeException;
 import tokyo.sakamichinotifier.hinata.domain.CloudStorageClient;
@@ -18,6 +19,7 @@ import static java.util.stream.Collectors.toList;
 
 @Component
 @RequiredArgsConstructor
+@Profile("!test")
 public class CloudStorageClientImpl implements CloudStorageClient {
 
 	private final Storage storage;

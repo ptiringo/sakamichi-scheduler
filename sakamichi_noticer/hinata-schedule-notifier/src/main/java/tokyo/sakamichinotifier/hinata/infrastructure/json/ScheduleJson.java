@@ -24,9 +24,7 @@ import java.util.Optional;
 @NullMarked
 public class ScheduleJson {
 
-	private static final ZoneId DEFAULT_TIMEZONE = ZoneId.of("Asia/Tokyo");
-
-	private static final ZoneOffset DEFAULT_OFFSET = ZoneOffset.ofHours(9);
+	protected static final ZoneId DEFAULT_TIMEZONE = ZoneId.of("Asia/Tokyo");
 
 	private String scheduleId;
 
@@ -49,8 +47,11 @@ public class ScheduleJson {
 	 * @return 変換された Schedule オブジェクト
 	 */
 	public Schedule toSchedule() {
-		return Schedule.create(scheduleId, title, scheduleType, scheduleDate, startTime.atOffset(DEFAULT_OFFSET),
-				Optional.ofNullable(endTime).map(x -> x.atOffset(DEFAULT_OFFSET)).orElse(null));
+		return Schedule.create(scheduleId, title, scheduleType, scheduleDate,
+				startTime.atZone(DEFAULT_TIMEZONE).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime(),
+				Optional.ofNullable(endTime)
+						.map(x -> x.atZone(DEFAULT_TIMEZONE).withZoneSameInstant(ZoneOffset.UTC).toLocalDateTime())
+						.orElse(null));
 	}
 
 	/** schedule_type フィールドの変換用デシリアライザ */

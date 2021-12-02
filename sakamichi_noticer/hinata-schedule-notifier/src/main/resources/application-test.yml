@@ -5,3 +5,4 @@ spring:
         enabled: false
       storage:
         enabled: false
+debug: true

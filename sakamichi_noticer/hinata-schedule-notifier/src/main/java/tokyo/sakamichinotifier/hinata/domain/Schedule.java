@@ -9,7 +9,7 @@ import org.jspecify.nullness.Nullable;
 import org.springframework.data.annotation.Id;
 
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -35,14 +35,16 @@ public class Schedule {
 	@Getter
 	private LocalDate scheduleDate;
 
+	/** 開始時刻 (UTC) */
 	@Field(name = "start_time")
-	private OffsetDateTime startTime;
+	private LocalDateTime startTime;
 
+	/** 終了時刻 (UTC) */
 	@Field(name = "end_time")
-	private OffsetDateTime endTime;
+	private LocalDateTime endTime;
 
 	protected Schedule(@Nullable String id, @Nullable String title, @Nullable ScheduleType scheduleType,
-			@Nullable LocalDate scheduleDate, @Nullable OffsetDateTime startTime, @Nullable OffsetDateTime endTime) {
+			@Nullable LocalDate scheduleDate, @Nullable LocalDateTime startTime, @Nullable LocalDateTime endTime) {
 		this.id = id;
 		this.title = title;
 		this.scheduleType = scheduleType;
@@ -51,22 +53,32 @@ public class Schedule {
 		this.endTime = endTime;
 	}
 
-	public Optional<OffsetDateTime> getStartTime() {
+	public Optional<LocalDateTime> getStartTime() {
 		return Optional.ofNullable(this.startTime);
 	}
 
-	public Optional<OffsetDateTime> getEndTime() {
+	public Optional<LocalDateTime> getEndTime() {
 		return Optional.ofNullable(this.endTime);
 	}
 
+	/**
+	 * スケジュールの作成
+	 * @param id ID
+	 * @param title タイトル
+	 * @param scheduleType スケジュール種別
+	 * @param scheduleDate スケジュール日
+	 * @param startTime 開始日時 (UTC)
+	 * @param endTime 終了日時 (UTC)
+	 * @return 作成されたスケジュール
+	 */
 	public static Schedule create(String id, String title, ScheduleType scheduleType, LocalDate scheduleDate,
-			@Nullable OffsetDateTime startTime, @Nullable OffsetDateTime endTime) {
+			@Nullable LocalDateTime startTime, @Nullable LocalDateTime endTime) {
 		return new Schedule(Objects.requireNonNull(id), Objects.requireNonNull(title),
 				Objects.requireNonNull(scheduleType), Objects.requireNonNull(scheduleDate), startTime, endTime);
 	}
 
 	public void update(@Nullable String newTitle, @Nullable ScheduleType newScheduleType,
-			@Nullable LocalDate newScheduleDate, @Nullable OffsetDateTime startTime, @Nullable OffsetDateTime endTime) {
+			@Nullable LocalDate newScheduleDate, @Nullable LocalDateTime startTime, @Nullable LocalDateTime endTime) {
 		this.title = newTitle;
 		this.scheduleType = newScheduleType;
 		this.scheduleDate = newScheduleDate;
