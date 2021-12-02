@@ -18,16 +18,16 @@ jobs:
           distribution: "temurin"
           cache: maven
 
-      - name: Build Function
-        run: ./mvnw package
-        working-directory: sakamichi_noticer/hinata-schedule-notifier/
-
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@master
         with:
           project_id: ${{ env.PROJECT_ID }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
+
+      - name: Build Function
+        run: ./mvnw package
+        working-directory: sakamichi_noticer/hinata-schedule-notifier/
 
       # - name: Deploy Function
       #   uses: google-github-actions/deploy-cloud-functions@main
