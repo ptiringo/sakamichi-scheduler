@@ -11,7 +11,7 @@ import tokyo.sakamichinotifier.hinata.domain.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +19,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
+import static tokyo.sakamichinotifier.hinata.application.HinataScheduleApplicationService.DEFAULT_TIMEZONE;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -73,8 +74,11 @@ class HinataScheduleApplicationServiceTest {
 
 		verify(lineClient, times(1)).broadcast(captor.capture());
 		assertThat(captor.getValue().getMessage()).contains(nonExistingTvSchedule.getTitle(),
-				nonExistingTvSchedule.getStartTime().orElseThrow().format(NOTIFICATION_TIME_FORMATTER) + "〜"
-						+ nonExistingTvSchedule.getEndTime().orElseThrow().format(NOTIFICATION_TIME_FORMATTER));
+				nonExistingTvSchedule.getStartTime().orElseThrow().atZone(ZoneOffset.UTC)
+						.withZoneSameInstant(DEFAULT_TIMEZONE).format(NOTIFICATION_TIME_FORMATTER) //
+						+ "〜" //
+						+ nonExistingTvSchedule.getEndTime().orElseThrow().atZone(ZoneOffset.UTC)
+								.withZoneSameInstant(DEFAULT_TIMEZONE).format(NOTIFICATION_TIME_FORMATTER));
 	}
 
 }

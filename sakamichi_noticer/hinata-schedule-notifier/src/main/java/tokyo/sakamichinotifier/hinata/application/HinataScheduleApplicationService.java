@@ -10,6 +10,7 @@ import tokyo.sakamichinotifier.hinata.domain.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
@@ -29,7 +30,7 @@ public class HinataScheduleApplicationService {
 	/** 通知に使用する時間のフォーマッター */
 	private static final DateTimeFormatter NOTIFICATION_TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
-	private static final ZoneId DEFAULT_TIMEZONE = ZoneId.of("Asia/Tokyo");
+	protected static final ZoneId DEFAULT_TIMEZONE = ZoneId.of("Asia/Tokyo");
 
 	private final CloudStorageClient cloudStorageClient;
 
@@ -101,9 +102,11 @@ public class HinataScheduleApplicationService {
 
 		if (savedSchedule.hasTime()) {
 			message += "\n" //
-					+ savedSchedule.getStartTime().orElseThrow().format(NOTIFICATION_TIME_FORMATTER) //
+					+ savedSchedule.getStartTime().orElseThrow().atZone(ZoneOffset.UTC)
+							.withZoneSameInstant(DEFAULT_TIMEZONE).format(NOTIFICATION_TIME_FORMATTER) //
 					+ "〜" //
-					+ savedSchedule.getEndTime().map(time -> time.format(NOTIFICATION_TIME_FORMATTER)).orElse("");
+					+ savedSchedule.getEndTime().map(time -> time.atZone(ZoneOffset.UTC)
+							.withZoneSameInstant(DEFAULT_TIMEZONE).format(NOTIFICATION_TIME_FORMATTER)).orElse("");
 		}
 
 		return lineClient.broadcast(new LineMessage(message));
