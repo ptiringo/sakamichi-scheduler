@@ -39,7 +39,7 @@ class HinataScheduleApplicationServiceTest {
 	@Captor
 	private ArgumentCaptor<LineMessage> captor;
 
-	private static final DateTimeFormatter NOTIFICATION_TIME_FORMATTER = DateTimeFormatter.ofPattern("hh:mm");
+	private static final DateTimeFormatter NOTIFICATION_TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
 	@Test
 	void testFetchAndSaveNewSchedules() {
