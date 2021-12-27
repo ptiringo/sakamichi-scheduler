@@ -32,12 +32,14 @@
 #### 使用技術
 - [Terraform](https://www.terraform.io/)
 - [Google Cloud Platform](https://console.cloud.google.com/?hl=ja)
+  - [Deployment Manager](https://cloud.google.com/deployment-manager)
   - [App Engine](https://cloud.google.com/appengine)
   - [Cloud Run](https://cloud.google.com/run)
   - [Cloud Scheduler](https://cloud.google.com/scheduler)
   - [Cloud Storage](https://cloud.google.com/storage/)
   - [Identity and Access Management (IAM)](https://cloud.google.com/iam/)
   - [Secret Manager](https://cloud.google.com/secret-manager)
+- [just](https://github.com/casey/just)
 
 ### sakamichi_noticer
 
