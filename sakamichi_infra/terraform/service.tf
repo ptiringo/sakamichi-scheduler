@@ -29,3 +29,11 @@ resource "google_project_service" "datastore" {
 resource "google_project_service" "secretmanager" {
   service = "secretmanager.googleapis.com"
 }
+
+resource "google_project_service" "deploymentmanager" {
+  service = "deploymentmanager.googleapis.com"
+}
+
+resource "google_project_service" "monitoring" {
+  service = "monitoring.googleapis.com"
+}

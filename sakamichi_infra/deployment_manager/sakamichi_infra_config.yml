@@ -1,0 +1,24 @@
+resources:
+  - name: mail-notification
+    type: gcp-types/monitoring-v3:projects.notificationChannels
+    properties:
+      displayName: Mail Notification
+      type: email
+      enabled: true
+      labels:
+        email_address: ptiringo@gmail.com
+
+  - name: error-log
+    type: gcp-types/monitoring-v3:projects.alertPolicies
+    properties:
+      displayName: Error Log
+      alertStrategy:
+        notificationRateLimit:
+          period: 300s
+      combiner: OR
+      conditions:
+        - displayName: Cloud Function Error
+          conditionMatchedLog:
+            filter: resource.type=("cloud_function" OR "cloud_run_revision" OR "cloud_scheduler_job") severity>=ERROR
+      notificationChannels:
+        - $(ref.mail-notification.name)
