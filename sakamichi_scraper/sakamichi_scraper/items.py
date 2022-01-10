@@ -5,8 +5,7 @@
 
 from dataclasses import dataclass
 from datetime import date, time
-
-import scrapy
+from typing import Optional
 
 
 @dataclass
@@ -15,5 +14,15 @@ class HinataSchedule:
     title: str
     schedule_type: str
     schedule_date: date
-    start_time: time
-    end_time: time
+    start_time: Optional[time]
+    end_time: Optional[time]
+
+
+@dataclass
+class NogiSchedule:
+    schedule_id: str
+    title: str
+    schedule_type: str
+    schedule_date: date
+    start_time: Optional[time]
+    end_time: Optional[time]

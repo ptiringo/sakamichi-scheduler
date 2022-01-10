@@ -1,0 +1,11 @@
+#!/usr/bin/env just --justfile
+
+set dotenv-load := true
+
+test-execute-hinata-schedule:
+  poetry run scrapy runspider sakamichi_scraper/spiders/hinata_schedule_spider.py \
+    --overwrite-output=output/hinata_schedule.jl
+
+test-execute-nogi-schedule:
+  poetry run scrapy runspider sakamichi_scraper/spiders/nogi_schedule_spider.py \
+    --overwrite-output=output/nogi_schedule.jl

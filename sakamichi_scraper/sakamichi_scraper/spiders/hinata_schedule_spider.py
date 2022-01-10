@@ -1,9 +1,10 @@
-from collections.abc import Iterable
 from datetime import date, datetime, time, timedelta
+from typing import Any, Generator
 from urllib.parse import urlparse
 
 import scrapy
 from dateutil.relativedelta import relativedelta
+
 from sakamichi_scraper.items import HinataSchedule
 
 
@@ -35,7 +36,9 @@ class HinataScheduleSpider(scrapy.Spider):
                 f"https://www.hinatazaka46.com/s/official/media/list?ima=0000&dy={d.strftime('%Y%m')}",
             )
 
-    def parse(self, response: scrapy.http.TextResponse):
+    def parse(
+        self, response: scrapy.http.TextResponse, **kwargs
+    ) -> Generator[HinataSchedule, Any, None]:
         div_page_date = response.css("div.p-schedule__page_date")
 
         year = int(
@@ -64,11 +67,6 @@ class HinataScheduleSpider(scrapy.Spider):
             ):
                 a = li_item.css("a")
 
-                print(
-                    urlparse(a.attrib["href"]).path.split("/")[-1],
-                    a.css("p.c-schedule__text::text").get().strip(),
-                )
-
                 schedule_date = date(year, month, day_of_month)
 
                 time_str: str = a.css("div.c-schedule__time--list::text").get()
@@ -77,20 +75,20 @@ class HinataScheduleSpider(scrapy.Spider):
                 end_time = None
 
                 if len(time_str) != 0:
-                    splited_time = time_str.strip().split("～")
-                    splited_start_time = splited_time[0].split(":")
+                    splitted_time = time_str.strip().split("～")
+                    splitted_start_time = splitted_time[0].split(":")
                     schedule_date_time = start_time = datetime.combine(
                         schedule_date, time()
                     )
 
-                    if len(splited_start_time) > 1:
+                    if len(splitted_start_time) > 1:
                         start_time = schedule_date_time + timedelta(
-                            hours=int(splited_start_time[0]),
-                            minutes=int(splited_start_time[1]),
+                            hours=int(splitted_start_time[0]),
+                            minutes=int(splitted_start_time[1]),
                         )
 
-                    if splited_time[-1]:
-                        splited_end_time = splited_time[-1].split(":")
+                    if splitted_time[-1]:
+                        splited_end_time = splitted_time[-1].split(":")
                         end_time = schedule_date_time + +timedelta(
                             hours=int(splited_end_time[0]),
                             minutes=int(splited_end_time[1]),
