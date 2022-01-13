@@ -71,6 +71,24 @@ resource "google_storage_bucket_iam_member" "hinata_schedule_storage_object_view
   member = "serviceAccount:${google_service_account.hinata_notifier_executor.email}"
 }
 
+resource "google_storage_bucket_iam_member" "nogi_schedule_storage_legacy_bucket_reader_sakamichi_scraper_executor" {
+  bucket = google_storage_bucket.nogi_schedule.name
+  role   = "roles/storage.legacyBucketReader"
+  member = "serviceAccount:${google_service_account.sakamichi_scraper_executor.email}"
+}
+
+resource "google_storage_bucket_iam_member" "nogi_schedule_storage_object_creator_sakamichi_scraper_executor" {
+  bucket = google_storage_bucket.nogi_schedule.name
+  role   = "roles/storage.objectCreator"
+  member = "serviceAccount:${google_service_account.sakamichi_scraper_executor.email}"
+}
+
+resource "google_storage_bucket_iam_member" "nogi_schedule_storage_object_viewer_nogi_notifier_executor" {
+  bucket = google_storage_bucket.nogi_schedule.name
+  role   = "roles/storage.objectViewer"
+  member = "serviceAccount:${google_service_account.hinata_notifier_executor.email}"
+}
+
 #----------------------------------------------------------------------
 # google_secret_manager_secret_iam_policy
 #----------------------------------------------------------------------
