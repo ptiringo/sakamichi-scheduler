@@ -18,7 +18,7 @@ spec:
               name: http1
           resources:
             limits:
-              cpu: 1
+              cpu: "1"
               memory: 128Mi
       serviceAccountName: sakamichi-scraper-executor@sakamichi-noticer.iam.gserviceaccount.com
       timeoutSeconds: 300
