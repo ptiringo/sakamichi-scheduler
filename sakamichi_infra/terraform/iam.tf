@@ -1,44 +1,55 @@
+
+
+
 #----------------------------------------------------------------------
 # google_project_iam_member
 #----------------------------------------------------------------------
 resource "google_project_iam_member" "ci_executor_artifactregistry_writer" {
-  role   = "roles/artifactregistry.writer"
-  member = "serviceAccount:${google_service_account.ci_executor.email}"
+  project = "sakamichi-noticer"
+  role    = "roles/artifactregistry.writer"
+  member  = "serviceAccount:${google_service_account.ci_executor.email}"
 }
 
 resource "google_project_iam_member" "ci_executor_run_developer" {
-  role   = "roles/run.developer"
-  member = "serviceAccount:${google_service_account.ci_executor.email}"
+  project = "sakamichi-noticer"
+  role    = "roles/run.developer"
+  member  = "serviceAccount:${google_service_account.ci_executor.email}"
 }
 
 resource "google_project_iam_member" "ci_executor_service_account_user" {
-  role   = "roles/iam.serviceAccountUser"
-  member = "serviceAccount:${google_service_account.ci_executor.email}"
+  project = "sakamichi-noticer"
+  role    = "roles/iam.serviceAccountUser"
+  member  = "serviceAccount:${google_service_account.ci_executor.email}"
 }
 
 resource "google_project_iam_member" "ci_executor_invoker_cloudscheduler_admin" {
-  role   = "roles/cloudscheduler.admin"
-  member = "serviceAccount:${google_service_account.ci_executor.email}"
+  project = "sakamichi-noticer"
+  role    = "roles/cloudscheduler.admin"
+  member  = "serviceAccount:${google_service_account.ci_executor.email}"
 }
 
 resource "google_project_iam_member" "ci_executor_invoker_cloudfunctions_admin" {
-  role   = "roles/cloudfunctions.admin"
-  member = "serviceAccount:${google_service_account.ci_executor.email}"
+  project = "sakamichi-noticer"
+  role    = "roles/cloudfunctions.admin"
+  member  = "serviceAccount:${google_service_account.ci_executor.email}"
 }
 
 resource "google_project_iam_member" "sakamichi_scraper_invoker_run_invoker" {
-  role   = "roles/run.invoker"
-  member = "serviceAccount:${google_service_account.sakamichi_scraper_invoker.email}"
+  project = "sakamichi-noticer"
+  role    = "roles/run.invoker"
+  member  = "serviceAccount:${google_service_account.sakamichi_scraper_invoker.email}"
 }
 
 resource "google_project_iam_member" "hinata_notifier_executor_cloudfunctions_service_agent" {
-  role   = "roles/cloudfunctions.serviceAgent"
-  member = "serviceAccount:${google_service_account.hinata_notifier_executor.email}"
+  project = "sakamichi-noticer"
+  role    = "roles/cloudfunctions.serviceAgent"
+  member  = "serviceAccount:${google_service_account.hinata_notifier_executor.email}"
 }
 
 resource "google_project_iam_member" "hinata_notifier_executor_datastore_user" {
-  role   = "roles/datastore.user"
-  member = "serviceAccount:${google_service_account.hinata_notifier_executor.email}"
+  project = "sakamichi-noticer"
+  role    = "roles/datastore.user"
+  member  = "serviceAccount:${google_service_account.hinata_notifier_executor.email}"
 }
 
 #----------------------------------------------------------------------
