@@ -6,7 +6,7 @@ authors = ["Matsui <ptiringo@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-diagrams = "^0.20.0"
+diagrams = "^0.23.1"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^21.7b0", allow-prereleases = true}

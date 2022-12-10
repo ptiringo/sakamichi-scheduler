@@ -49,15 +49,15 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "diagrams"
-version = "0.20.0"
+version = "0.23.1"
 description = "Diagram as Code"
 category = "main"
 optional = false
 python-versions = ">=3.6,<4.0"
 
 [package.dependencies]
-graphviz = ">=0.13.2,<0.17.0"
-jinja2 = ">=2.10,<3.0"
+graphviz = ">=0.13.2,<0.20.0"
+jinja2 = ">=2.10,<4.0"
 
 [[package]]
 name = "graphviz"
@@ -143,7 +143,7 @@ python-versions = ">=3.6"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "a81959bed992fc6d19655a01ce40c124de5408c22eb39a15580680ba0c7ab95f"
+content-hash = "e332cd81dd29ad9611986d02a8dfb88fd6f244cae60d6d8e61b458121d06327a"
 
 [metadata.files]
 appdirs = [
@@ -162,10 +162,7 @@ colorama = [
     {file = "colorama-0.4.4-py2.py3-none-any.whl", hash = "sha256:9f47eda37229f68eee03b24b9748937c7dc3868f906e8ba69fbcbdd3bc5dc3e2"},
     {file = "colorama-0.4.4.tar.gz", hash = "sha256:5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b"},
 ]
-diagrams = [
-    {file = "diagrams-0.20.0-py3-none-any.whl", hash = "sha256:395391663b4d3f2d3e3614797402ca99494e00baf3926f5c9e72856d34cafedd"},
-    {file = "diagrams-0.20.0.tar.gz", hash = "sha256:a50743ed9274e194e7898820f69aa12868ae217003580ef9e7d0285132c9674a"},
-]
+diagrams = []
 graphviz = [
     {file = "graphviz-0.16-py2.py3-none-any.whl", hash = "sha256:3cad5517c961090dfc679df6402a57de62d97703e2880a1a46147bb0dc1639eb"},
     {file = "graphviz-0.16.zip", hash = "sha256:d2d25af1c199cad567ce4806f0449cb74eb30cf451fd7597251e1da099ac6e57"},
