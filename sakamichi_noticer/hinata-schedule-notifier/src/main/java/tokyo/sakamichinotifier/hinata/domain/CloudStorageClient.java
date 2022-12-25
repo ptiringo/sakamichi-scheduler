@@ -1,6 +1,6 @@
 package tokyo.sakamichinotifier.hinata.domain;
 
-import org.jspecify.nullness.NullMarked;
+import org.jspecify.annotations.NullMarked;
 
 import java.util.List;
 
