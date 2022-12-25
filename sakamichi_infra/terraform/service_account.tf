@@ -2,7 +2,7 @@
 # google_compute_default_service_account
 #----------------------------------------------------------------------
 data "google_compute_default_service_account" "compute_default" {
-  depends_on = [google_project_service.compute]
+  depends_on = [google_project_service.service]
 }
 
 #----------------------------------------------------------------------
@@ -33,5 +33,5 @@ resource "google_service_account" "hinata_notifier_executor" {
 #----------------------------------------------------------------------
 resource "google_service_account_key" "ci_executor" {
   service_account_id = google_service_account.ci_executor.name
-  depends_on         = [google_project_service.compute]
+  depends_on         = [google_project_service.service]
 }

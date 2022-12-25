@@ -1,113 +1,142 @@
 #----------------------------------------------------------------------
 # google_project_iam_member
 #----------------------------------------------------------------------
-resource "google_project_iam_member" "ci_executor_artifactregistry_writer" {
-  project = "sakamichi-noticer"
-  role    = "roles/artifactregistry.writer"
-  member  = "serviceAccount:${google_service_account.ci_executor.email}"
+locals {
+  ci_executor_roles = [
+    "roles/artifactregistry.writer",
+    "roles/cloudfunctions.admin",
+    "roles/cloudscheduler.admin",
+    "roles/iam.serviceAccountUser",
+    "roles/run.developer"
+  ]
+  sakamichi_scraper_invoker_roles = [
+    "roles/run.invoker"
+  ]
+  hinata_notifier_executor_roles = [
+    "roles/cloudfunctions.serviceAgent",
+    "roles/datastore.user"
+  ]
 }
 
-resource "google_project_iam_member" "ci_executor_run_developer" {
-  project = "sakamichi-noticer"
-  role    = "roles/run.developer"
-  member  = "serviceAccount:${google_service_account.ci_executor.email}"
+resource "google_project_iam_member" "ci_executor" {
+  for_each = toset(local.ci_executor_roles)
+  project  = data.google_project.project.id
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.ci_executor.email}"
 }
 
-resource "google_project_iam_member" "ci_executor_service_account_user" {
-  project = "sakamichi-noticer"
-  role    = "roles/iam.serviceAccountUser"
-  member  = "serviceAccount:${google_service_account.ci_executor.email}"
+resource "google_project_iam_member" "sakamichi_scraper_invoker" {
+  for_each = toset(local.sakamichi_scraper_invoker_roles)
+  project  = data.google_project.project.id
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.sakamichi_scraper_invoker.email}"
 }
 
-resource "google_project_iam_member" "ci_executor_invoker_cloudscheduler_admin" {
-  project = "sakamichi-noticer"
-  role    = "roles/cloudscheduler.admin"
-  member  = "serviceAccount:${google_service_account.ci_executor.email}"
-}
-
-resource "google_project_iam_member" "ci_executor_invoker_cloudfunctions_admin" {
-  project = "sakamichi-noticer"
-  role    = "roles/cloudfunctions.admin"
-  member  = "serviceAccount:${google_service_account.ci_executor.email}"
-}
-
-resource "google_project_iam_member" "sakamichi_scraper_invoker_run_invoker" {
-  project = "sakamichi-noticer"
-  role    = "roles/run.invoker"
-  member  = "serviceAccount:${google_service_account.sakamichi_scraper_invoker.email}"
-}
-
-resource "google_project_iam_member" "hinata_notifier_executor_cloudfunctions_service_agent" {
-  project = "sakamichi-noticer"
-  role    = "roles/cloudfunctions.serviceAgent"
-  member  = "serviceAccount:${google_service_account.hinata_notifier_executor.email}"
-}
-
-resource "google_project_iam_member" "hinata_notifier_executor_datastore_user" {
-  project = "sakamichi-noticer"
-  role    = "roles/datastore.user"
-  member  = "serviceAccount:${google_service_account.hinata_notifier_executor.email}"
+resource "google_project_iam_member" "hinata_notifier_executor" {
+  for_each = toset(local.hinata_notifier_executor_roles)
+  project  = data.google_project.project.id
+  role     = each.value
+  member   = "serviceAccount:${google_service_account.hinata_notifier_executor.email}"
 }
 
 #----------------------------------------------------------------------
 # google_service_account_iam_member
 #----------------------------------------------------------------------
-resource "google_service_account_iam_member" "sakamichi_scraper_executor_service_account_user_ci_executor" {
-  service_account_id = google_service_account.sakamichi_scraper_executor.name
-  role               = "roles/iam.serviceAccountUser"
+locals {
+  ci_executor_service_account_roles = [
+    {
+      service_account_id = google_service_account.sakamichi_scraper_executor.name
+      role               = "roles/iam.serviceAccountUser"
+    },
+  ]
+}
+
+resource "google_service_account_iam_member" "ci_executor" {
+  for_each = { for r in local.ci_executor_service_account_roles : "${r.service_account_id}_${r.role}" => {
+    service_account_id = r.service_account_id
+    role               = r.role
+  } }
+  service_account_id = each.value.service_account_id
+  role               = each.value.role
   member             = "serviceAccount:${google_service_account.ci_executor.email}"
 }
 
 #----------------------------------------------------------------------
 # google_storage_bucket_iam_member
 #----------------------------------------------------------------------
-resource "google_storage_bucket_iam_member" "hinata_schedule_storage_legacy_bucket_reader_sakamichi_scraper_executor" {
-  bucket = google_storage_bucket.hinata_schedule.name
-  role   = "roles/storage.legacyBucketReader"
+locals {
+  sakamichi_scraper_executor_storage_bucket_roles = [
+    {
+      bucket = google_storage_bucket.hinata_schedule.name
+      role   = "roles/storage.legacyBucketReader"
+    },
+    {
+      bucket = google_storage_bucket.hinata_schedule.name
+      role   = "roles/storage.objectCreator"
+    },
+    {
+      bucket = google_storage_bucket.nogi_schedule.name
+      role   = "roles/storage.legacyBucketReader"
+    },
+    {
+      bucket = google_storage_bucket.nogi_schedule.name
+      role   = "roles/storage.objectCreator"
+    }
+  ]
+  hinata_notifier_executor_storage_bucket_roles = [
+    {
+      bucket = google_storage_bucket.hinata_schedule.name
+      role   = "roles/storage.objectViewer"
+    },
+    {
+      bucket = google_storage_bucket.nogi_schedule.name
+      role   = "roles/storage.objectViewer"
+    }
+  ]
+}
+
+resource "google_storage_bucket_iam_member" "sakamichi_scraper_executor" {
+  for_each = { for r in local.sakamichi_scraper_executor_storage_bucket_roles : "${r.bucket}_${r.role}" => {
+    bucket = r.bucket
+    role   = r.role
+  } }
+  bucket = each.value.bucket
+  role   = each.value.role
   member = "serviceAccount:${google_service_account.sakamichi_scraper_executor.email}"
 }
 
-resource "google_storage_bucket_iam_member" "hinata_schedule_storage_object_creator_sakamichi_scraper_executor" {
-  bucket = google_storage_bucket.hinata_schedule.name
-  role   = "roles/storage.objectCreator"
-  member = "serviceAccount:${google_service_account.sakamichi_scraper_executor.email}"
-}
-
-resource "google_storage_bucket_iam_member" "hinata_schedule_storage_object_viewer_hinata_notifier_executor" {
-  bucket = google_storage_bucket.hinata_schedule.name
-  role   = "roles/storage.objectViewer"
-  member = "serviceAccount:${google_service_account.hinata_notifier_executor.email}"
-}
-
-resource "google_storage_bucket_iam_member" "nogi_schedule_storage_legacy_bucket_reader_sakamichi_scraper_executor" {
-  bucket = google_storage_bucket.nogi_schedule.name
-  role   = "roles/storage.legacyBucketReader"
-  member = "serviceAccount:${google_service_account.sakamichi_scraper_executor.email}"
-}
-
-resource "google_storage_bucket_iam_member" "nogi_schedule_storage_object_creator_sakamichi_scraper_executor" {
-  bucket = google_storage_bucket.nogi_schedule.name
-  role   = "roles/storage.objectCreator"
-  member = "serviceAccount:${google_service_account.sakamichi_scraper_executor.email}"
-}
-
-resource "google_storage_bucket_iam_member" "nogi_schedule_storage_object_viewer_nogi_notifier_executor" {
-  bucket = google_storage_bucket.nogi_schedule.name
-  role   = "roles/storage.objectViewer"
+resource "google_storage_bucket_iam_member" "hinata_notifier_executor" {
+  for_each = { for r in local.hinata_notifier_executor_storage_bucket_roles : "${r.bucket}_${r.role}" => {
+    bucket = r.bucket
+    role   = r.role
+  } }
+  bucket = each.value.bucket
+  role   = each.value.role
   member = "serviceAccount:${google_service_account.hinata_notifier_executor.email}"
 }
 
 #----------------------------------------------------------------------
 # google_secret_manager_secret_iam_policy
 #----------------------------------------------------------------------
-resource "google_secret_manager_secret_iam_member" "line_bot_channel_token_secretmanager_secret_accessor_hinata_notifier_executor" {
-  secret_id = google_secret_manager_secret.line_bot_channel_token.secret_id
-  role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${google_service_account.hinata_notifier_executor.email}"
+locals {
+  hinata_notifier_executor_secret_manager_secret_roles = [
+    {
+      secret_id = google_secret_manager_secret.line_bot_channel_token.secret_id
+      role      = "roles/secretmanager.secretAccessor"
+    },
+    {
+      secret_id = google_secret_manager_secret.line_bot_channel_secret.secret_id
+      role      = "roles/secretmanager.secretAccessor"
+    }
+  ]
 }
 
-resource "google_secret_manager_secret_iam_member" "line_bot_channel_secret_secretmanager_secret_accessor_hinata_notifier_executor" {
-  secret_id = google_secret_manager_secret.line_bot_channel_secret.secret_id
-  role      = "roles/secretmanager.secretAccessor"
+resource "google_secret_manager_secret_iam_member" "hinata_notifier_executor" {
+  for_each = { for r in local.hinata_notifier_executor_secret_manager_secret_roles : "${r.secret_id}_${r.role}" => {
+    secret_id = r.secret_id
+    role      = r.role
+  } }
+  secret_id = each.value.secret_id
+  role      = each.value.role
   member    = "serviceAccount:${google_service_account.hinata_notifier_executor.email}"
 }

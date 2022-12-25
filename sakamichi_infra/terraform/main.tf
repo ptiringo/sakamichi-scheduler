@@ -21,3 +21,6 @@ provider "google" {
   region  = "asia-northeast1"
   zone    = "asia-northeast1-a"
 }
+
+data "google_project" "project" {
+}
