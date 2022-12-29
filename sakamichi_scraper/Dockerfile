@@ -1,27 +1,41 @@
-FROM python:3.9
+# syntax=docker/dockerfile:1
+FROM python:3.11
 
 ARG WORK_DIR=/app
 ARG LOG_DIR=/var/log/scrapyrt
 ARG USER=scrapyrt
 
-RUN useradd --create-home ${USER} && \
-    mkdir ${WORK_DIR} ${LOG_DIR} && \
-    chown ${USER} ${WORK_DIR} ${LOG_DIR} && \
-    chmod 0755 ${WORK_DIR} ${LOG_DIR}
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+ENV POETRY_VERSION=1.3.0
+ENV POETRY_HOME=/usr/local/poetry
+ENV PATH ${PATH}:${POETRY_HOME}/bin
+
+WORKDIR ${WORK_DIR}
+
+COPY install.python-poetry.py ./
+
+RUN <<EOF
+  useradd --create-home ${USER}
+  mkdir ${LOG_DIR}
+  chown ${USER} ${WORK_DIR} ${LOG_DIR}
+  chmod 0755 ${WORK_DIR} ${LOG_DIR}
+  python install.python-poetry.py
+EOF
 
 USER ${USER}
 
-COPY sakamichi_scraper ${WORK_DIR}/sakamichi_scraper/
-COPY scrapy.cfg poetry.lock pyproject.toml ${WORK_DIR}/
+COPY poetry.lock pyproject.toml ./
 
-WORKDIR /app
+RUN <<EOF
+  mkdir logs
+  poetry install
+EOF
+
+COPY scrapy.cfg ./
+COPY sakamichi_scraper ./sakamichi_scraper
 
 ENV PATH /home/${USER}/.local/bin:$PATH
-
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/install-poetry.py | python - && \
-    poetry config virtualenvs.create false && \
-    poetry install && \
-    mkdir logs
 
 EXPOSE 8080
 
