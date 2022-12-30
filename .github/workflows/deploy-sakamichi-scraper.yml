@@ -2,6 +2,8 @@ name: deploy-sakamichi-scraper
 
 on: workflow_dispatch
 
+concurrency: deploy-sakamichi-scraper
+
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   REPOSITORY: sakamichi-docker-repo
@@ -12,7 +14,11 @@ env:
 
 jobs:
   build-image:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      id-token: write
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v3
