@@ -61,6 +61,12 @@ resource "google_service_account_iam_member" "ci_executor" {
   member             = "serviceAccount:${google_service_account.ci_executor.email}"
 }
 
+resource "google_service_account_iam_member" "repository_workload_identity_user_ci_executor" {
+  service_account_id = google_service_account.ci_executor.name
+  role               = "roles/iam.workloadIdentityUser"
+  member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.github.name}/attribute.repository/ptiringo/sakamichi-scheduler"
+}
+
 #----------------------------------------------------------------------
 # google_storage_bucket_iam_member
 #----------------------------------------------------------------------

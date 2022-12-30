@@ -7,6 +7,7 @@ locals {
     "compute",
     "datastore",
     "iam",
+    "iamcredentials",
     "monitoring",
     "secretmanager"
   ]
