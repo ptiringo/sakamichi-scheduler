@@ -21,7 +21,6 @@ import static tokyo.sakamichinotifier.hinata.domain.ScheduleType.TV;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@NullMarked
 public class HinataScheduleApplicationService {
 
 	/** 通知に使用する日付のフォーマッター */

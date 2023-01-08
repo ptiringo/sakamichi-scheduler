@@ -4,7 +4,6 @@ import com.google.cloud.spring.data.datastore.core.mapping.Entity;
 import com.google.cloud.spring.data.datastore.core.mapping.Field;
 import lombok.Getter;
 import lombok.ToString;
-import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.springframework.data.annotation.Id;
 
@@ -15,7 +14,6 @@ import java.util.Optional;
 
 @Entity(name = "hinata_schedule")
 @ToString
-@NullMarked
 public class Schedule {
 
 	@Id

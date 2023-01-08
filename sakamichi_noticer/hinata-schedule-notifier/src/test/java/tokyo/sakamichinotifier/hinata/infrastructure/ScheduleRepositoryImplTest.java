@@ -10,7 +10,6 @@ import tokyo.sakamichinotifier.hinata.domain.ScheduleType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
