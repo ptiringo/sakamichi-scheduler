@@ -68,4 +68,6 @@
 - [Poetry](https://python-poetry.org/)
 - [Scrapy](https://scrapy.org/)
 - [Scrapyrt](https://github.com/scrapinghub/scrapyrt)
+- [scrapy-splash](https://github.com/scrapy-plugins/scrapy-splash)
+- [Splash](https://github.com/scrapinghub/splash)
 - [Docker](https://www.docker.com/)
