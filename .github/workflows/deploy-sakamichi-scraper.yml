@@ -46,6 +46,8 @@ jobs:
           context: ./sakamichi_scraper
           push: true
           tags: ${{ env.HOSTNAME_LIST }}/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE }}:${{ env.TAG }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Deploy to Cloud Run
         id: deploy
