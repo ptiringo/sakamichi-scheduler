@@ -1,9 +1,6 @@
 
 :
 
-.gitignore,a/5/a5cc2925ca8258af241be7e5b0381edf30266302
-:
-
 scrapy.cfg,4/2/427cb5dd4e8760d20dc092bff179a5c1e788ea17
 ;
 poetry.lock,0/0/0068a1506b061a8948c37d78b0dd5697211558d3
