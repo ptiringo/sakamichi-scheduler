@@ -1,12 +1,11 @@
-import re
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, time, timedelta
+from pprint import pprint
 from typing import Any, Generator, Iterator
-from urllib.parse import ParseResult, urlparse
+from urllib.parse import parse_qs, urlparse
 
 import scrapy
-from dateutil.relativedelta import relativedelta
 from scrapy import Request
-from scrapy.selector import SelectorList
+from scrapy_splash import SplashRequest
 
 from sakamichi_scraper.items import NogiSchedule
 
@@ -32,77 +31,79 @@ class NogiScheduleSpider(scrapy.Spider):
         # 3ヶ月分
         for d in [
             today,
-            today + relativedelta(months=1),
-            today + relativedelta(months=2),
+            # today + relativedelta(months=1),
+            # today + relativedelta(months=2),
         ]:
-            yield scrapy.FormRequest(
-                "https://www.nogizaka46.com/schedule/",
-                formdata={"monthly": f"{d.strftime('%Y%m')}"},
+            yield SplashRequest(
+                url=f"https://www.nogizaka46.com/s/n46/media/list?dy={d.strftime('%Y%m')}"
             )
 
     def parse(
         self, response: scrapy.http.TextResponse, **kwargs
     ) -> Generator[NogiSchedule, Any, None]:
 
-        yyyymm = datetime.strptime(
-            response.css("#scheduleH2::text").get().strip(), "%Y年%m月"
-        )
+        qs = parse_qs(urlparse(response.url).query)
 
-        schedule_tables = response.css("#scheduleTable div.scheduleTableList")
+        print(qs["dy"])
 
-        for schedule_table in schedule_tables:
-            day_of_month = int(
-                schedule_table.css("div.first-child span::text").get().strip()
-            )
+        yyyymm = datetime.strptime(qs["dy"][0], "%Y%m")
 
-            schedule_date = yyyymm.replace(day=day_of_month)
+        schedule_days = response.css("div.sc--lists .sc--day")  # .css("div.sc--day")
 
-            schedules = schedule_table.css("div.last-child ul li")
+        for schedule_day in schedule_days:
+            dd = int(schedule_day.css("p.sc--day__d::text")[0].get())
+            schedule_date = yyyymm.replace(day=dd)
+
+            schedules = schedule_day.css("div.m--sclist div.m--scone")
 
             for schedule in schedules:
-                link: SelectorList = schedule.css("a")
-                url: ParseResult = urlparse(link.attrib["href"])
-                schedule_id = url.path.split("/")[-1].removesuffix(".php")
+                url = schedule.css("a.m--scone__a")[0].attrib["href"]
+                schedule_id = urlparse(url).path.split("/")[-1]
 
-                link_text = link.css("::text").get()
+                title = schedule.css("p.m--scone__ttl::text")[0].get()
 
-                match = re.match(
-                    r"(?P<start_hour>\d{1,2}):(?P<start_minute>\d{2})"
-                    r"[〜～]"
-                    r"(?P<end_hour>\d{1,2}):(?P<end_minute>\d{2})"
-                    r" (?P<title>.*)",
-                    link_text,
-                )
+                schedule_type = schedule.css("p.m--scone__cat__name::text")[0].get()
 
-                if match:
-                    start_hour, start_minute, end_hour, end_minute, title = (
-                        int(match.group("start_hour")),
-                        int(match.group("start_minute")),
-                        int(match.group("end_hour")),
-                        int(match.group("end_minute")),
-                        match.group("title"),
+                time_str: str = schedule.css("p.m--scone__st::text").get()
+
+                start_time = None
+                end_time = None
+
+                if len(time_str) != 0:
+                    pprint(time_str)
+                    splitted_time = time_str.strip().split("〜")
+                    pprint(splitted_time)
+                    splitted_start_time = splitted_time[0].split(":")
+                    pprint(splitted_start_time)
+                    schedule_date_time = start_time = datetime.combine(
+                        schedule_date, time()
                     )
 
-                    s_days, s_hour = divmod(start_hour, 24)
-                    start_time = schedule_date + timedelta(
-                        days=s_days, hours=s_hour, minutes=start_minute
-                    )
+                    if len(splitted_start_time) > 1:
+                        start_time = schedule_date_time + timedelta(
+                            hours=int(splitted_start_time[0]),
+                            minutes=int(splitted_start_time[1]),
+                        )
 
-                    e_days, e_hour = divmod(end_hour, 24)
-                    end_time = schedule_date + timedelta(
-                        days=e_days, hours=e_hour, minutes=end_minute
-                    )
+                    if splitted_time[-1]:
+                        splited_end_time = splitted_time[-1].split(":")
+                        end_time = schedule_date_time + +timedelta(
+                            hours=int(splited_end_time[0]),
+                            minutes=int(splited_end_time[1]),
+                        )
 
-                else:
-                    title = link_text
-                    start_time = None
-                    end_time = None
+                # TODO
+                # docker compose up
+                # poetry run scrapy shell "http://localhost:8050/render.html?url=https://www.nogizaka46.com/s/n46/media/list?dy=202301"
 
-                yield NogiSchedule(
+                n = NogiSchedule(
                     schedule_id=schedule_id,
                     title=title,
                     schedule_date=schedule_date,
-                    schedule_type=link.attrib["class"],
+                    schedule_type=schedule_type,
                     start_time=start_time,
                     end_time=end_time,
                 )
+
+                pprint(n)
+                yield n

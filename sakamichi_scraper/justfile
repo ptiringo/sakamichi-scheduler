@@ -2,10 +2,20 @@
 
 set dotenv-load := true
 
+compose-up:
+  docker compose up -d
+
+compose-down:
+  docker compose down
+
+check:
+  poetry run scrapy check
+
 test-execute-hinata-schedule:
   poetry run scrapy runspider sakamichi_scraper/spiders/hinata_schedule_spider.py \
     --overwrite-output=output/hinata_schedule.jl
 
-test-execute-nogi-schedule:
+test-execute-nogi-schedule: compose-up
   poetry run scrapy runspider sakamichi_scraper/spiders/nogi_schedule_spider.py \
-    --overwrite-output=output/nogi_schedule.jl
+    --overwrite-output=output/nogi_schedule.jl \
+    --set SPLASH_URL=${SPLASH_URL}

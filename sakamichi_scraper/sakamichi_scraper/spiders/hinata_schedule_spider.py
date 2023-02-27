@@ -27,18 +27,27 @@ class HinataScheduleSpider(scrapy.Spider):
         today = date.today()
 
         # 3ヶ月分
-        for d in [
-            today,
-            today + relativedelta(months=1),
-            today + relativedelta(months=2),
-        ]:
-            yield scrapy.Request(
-                f"https://www.hinatazaka46.com/s/official/media/list?ima=0000&dy={d.strftime('%Y%m')}",
-            )
+        # for d in [
+        #     today,
+        #     today + relativedelta(months=1),
+        #     today + relativedelta(months=2),
+        # ]:
+        #     yield scrapy.Request(
+        #         f"https://www.hinatazaka46.com/s/official/media/list?ima=0000&dy={d.strftime('%Y%m')}",
+        #     )
+
+        yield scrapy.Request(
+            f"https://www.hinatazaka46.com/s/official/media/list?ima=0000&dy=202301",
+        )
 
     def parse(
         self, response: scrapy.http.TextResponse, **kwargs
     ) -> Generator[HinataSchedule, Any, None]:
+        """
+
+        @url https://www.hinatazaka46.com/s/official/media/list?ima=0000&dy=202301
+        @returns items 99
+        """
         div_page_date = response.css("div.p-schedule__page_date")
 
         year = int(
@@ -77,9 +86,7 @@ class HinataScheduleSpider(scrapy.Spider):
                 if len(time_str) != 0:
                     splitted_time = time_str.strip().split("～")
                     splitted_start_time = splitted_time[0].split(":")
-                    schedule_date_time = start_time = datetime.combine(
-                        schedule_date, time()
-                    )
+                    schedule_date_time = datetime.combine(schedule_date, time())
 
                     if len(splitted_start_time) > 1:
                         start_time = schedule_date_time + timedelta(
@@ -89,7 +96,7 @@ class HinataScheduleSpider(scrapy.Spider):
 
                     if splitted_time[-1]:
                         splited_end_time = splitted_time[-1].split(":")
-                        end_time = schedule_date_time + +timedelta(
+                        end_time = schedule_date_time + timedelta(
                             hours=int(splited_end_time[0]),
                             minutes=int(splited_end_time[1]),
                         )
