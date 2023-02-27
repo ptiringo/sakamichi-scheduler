@@ -27,18 +27,14 @@ class HinataScheduleSpider(scrapy.Spider):
         today = date.today()
 
         # 3ヶ月分
-        # for d in [
-        #     today,
-        #     today + relativedelta(months=1),
-        #     today + relativedelta(months=2),
-        # ]:
-        #     yield scrapy.Request(
-        #         f"https://www.hinatazaka46.com/s/official/media/list?ima=0000&dy={d.strftime('%Y%m')}",
-        #     )
-
-        yield scrapy.Request(
-            f"https://www.hinatazaka46.com/s/official/media/list?ima=0000&dy=202301",
-        )
+        for d in [
+            today,
+            today + relativedelta(months=1),
+            today + relativedelta(months=2),
+        ]:
+            yield scrapy.Request(
+                f"https://www.hinatazaka46.com/s/official/media/list?ima=0000&dy={d.strftime('%Y%m')}",
+            )
 
     def parse(
         self, response: scrapy.http.TextResponse, **kwargs
@@ -64,7 +60,6 @@ class HinataScheduleSpider(scrapy.Spider):
         )
 
         for div_list_group in response.css("div.p-schedule__list-group"):
-
             day_of_month = int(
                 div_list_group.css("div.c-schedule__date--list span::text")
                 .get()
