@@ -7,6 +7,8 @@ resource "google_monitoring_notification_channel" "mail" {
 }
 
 resource "google_monitoring_alert_policy" "error_log" {
+  enabled = false
+
   display_name          = "Error Log"
   combiner              = "OR"
   notification_channels = [google_monitoring_notification_channel.mail.name]
