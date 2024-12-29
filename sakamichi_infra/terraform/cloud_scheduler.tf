@@ -17,6 +17,7 @@ resource "google_cloud_scheduler_job" "collect_nogi_schedule" {
   name      = "collect-nogi-schedule"
   schedule  = "every 6 hours"
   time_zone = "Asia/Tokyo"
+  paused    = true
 
   http_target {
     http_method = "GET"
